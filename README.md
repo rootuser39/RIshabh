@@ -11,8 +11,6 @@
 I'm **Rishabh D**. I work across AI infrastructure, distributed networking, autonomous agents, and low-level runtimes. My attention goes to the parts you usually don't see: **GPU fabrics, inference, orchestration, observability, and the machinery that makes execution possible**.
 
 <p>
-  <a href="https://rishabhdurugkar.me/"><b>Enter portfolio ↗</b></a>
-  &nbsp;&nbsp; / &nbsp;&nbsp;
   <a href="https://github.com/rootuser39">GitHub ↗</a>
   &nbsp;&nbsp; / &nbsp;&nbsp;
   <a href="#01--specimen-index">Inspect the systems ↓</a>
@@ -85,7 +83,7 @@ Interested in technically serious work around **distributed inference, AI-fabric
 
 If the problem lives somewhere between a model, a network, and a machine, I'd like to hear about it.
 
-**[Find me through my portfolio ↗](https://rishabhdurugkar.me/)** &nbsp; / &nbsp; **[Explore the repositories ↗](https://github.com/rootuser39?tab=repositories)**
+**[Explore the repositories ↗](https://github.com/rootuser39?tab=repositories)**
 
 ---
 
