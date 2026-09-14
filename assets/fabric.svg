@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="240" viewBox="0 0 560 240" role="img" aria-labelledby="title desc">
+<title id="title">AI FABRIC LAB — The conversation between GPUs.</title><desc id="desc">AI FABRIC LAB — The conversation between GPUs.</desc>
+<defs>
+ <radialGradient id="space"><stop stop-color="#1b211d"/><stop offset="1" stop-color="#080a0c"/></radialGradient>
+ <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#454b48"/><stop offset=".32" stop-color="#d5dbd3"/><stop offset=".5" stop-color="#ffffff"/><stop offset=".72" stop-color="#6c776c"/><stop offset="1" stop-color="#242c26"/></linearGradient>
+ <linearGradient id="trail"><stop stop-color="#ceff79" stop-opacity="0"/><stop offset="1" stop-color="#ceff79"/></linearGradient>
+ <radialGradient id="void"><stop offset=".7" stop-color="#030404"/><stop offset="1" stop-color="#0a0e0b"/></radialGradient>
+ <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3"/></filter>
+ <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M 48 0 H 0 V 48" fill="none" stroke="#b9c7bd" stroke-opacity=".05" stroke-width="1"/></pattern>
+</defs>
+<style>
+ .turn { animation: turn 42s linear infinite; }
+ .counter { animation: turn 64s linear infinite reverse; }
+ .slow { animation: turn 90s linear infinite; }
+ .signal { animation: flow 10s linear infinite; }
+ .breathe { animation: breathe 6s ease-in-out infinite; }
+ .blink { animation: breathe 4s ease-in-out infinite; }
+ @keyframes turn { to { transform: rotate(360deg); } }
+ @keyframes flow { to { stroke-dashoffset: -400; } }
+ @keyframes breathe { 0%,100% { opacity:.35; } 50% { opacity:.95; } }
+ @media (prefers-reduced-motion: reduce) { .turn,.counter,.slow,.signal,.breathe,.blink { animation:none !important; } }
+</style>
+<rect width="100%" height="100%" rx="18" fill="#080a0c"/>
+<rect x="1" y="1" width="558" height="238" rx="18" fill="url(#grid)"/><text x="28" y="34" fill="#929995" font-family="'DejaVu Sans Mono',monospace" font-size="10" font-weight="400" letter-spacing="1.5">03 / EXPERIMENTAL SYSTEM</text><text x="28" y="96" fill="#f0f1ec" font-family="Arial,Helvetica,sans-serif" font-size="42" font-weight="700" letter-spacing="-1.5">AI FABRIC LAB</text><text x="29" y="134" fill="#929995" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="400" >The conversation between GPUs.</text><text x="29" y="203" fill="#ceff79" font-family="'DejaVu Sans Mono',monospace" font-size="10" font-weight="400" letter-spacing=".5">CONGESTION / COLLECTIVES / TELEMETRY</text><path d="M 29 160 H 335" stroke="#2c362d"/><path d="M 511 30 H 531 V 50 M 531 30 L 509 52" fill="none" stroke="#8d9987" stroke-width="1.5"/><g transform="translate(445 125)"><path d="M -54 -45 L -54 45" stroke="#64755e" stroke-width=".85" fill="none"/><path d="M -54 -45 L 0 45" stroke="#64755e" stroke-width=".85" fill="none"/><path d="M -54 -45 L 54 45" stroke="#64755e" stroke-width=".85" fill="none"/><path d="M 0 -45 L -54 45" stroke="#64755e" stroke-width=".85" fill="none"/><path d="M 0 -45 L 0 45" stroke="#64755e" stroke-width=".85" fill="none"/><path d="M 0 -45 L 54 45" stroke="#64755e" stroke-width=".85" fill="none"/><path d="M 54 -45 L -54 45" stroke="#64755e" stroke-width=".85" fill="none"/><path d="M 54 -45 L 0 45" stroke="#64755e" stroke-width=".85" fill="none"/><path d="M 54 -45 L 54 45" stroke="#64755e" stroke-width=".85" fill="none"/><path d="M -54 -45 L 54 45 M 54 -45 L -54 45" stroke="#ceff79" stroke-width="2" fill="none" stroke-dasharray="5 30" class="signal"/><rect x="-64" y="-55" width="20" height="20" rx="4" fill="#080a0c" stroke="#b5c2ac"/><rect x="-10" y="-55" width="20" height="20" rx="4" fill="#080a0c" stroke="#b5c2ac"/><rect x="44" y="-55" width="20" height="20" rx="4" fill="#080a0c" stroke="#b5c2ac"/><rect x="-64" y="35" width="20" height="20" rx="4" fill="#080a0c" stroke="#b5c2ac"/><rect x="-10" y="35" width="20" height="20" rx="4" fill="#080a0c" stroke="#b5c2ac"/><rect x="44" y="35" width="20" height="20" rx="4" fill="#080a0c" stroke="#b5c2ac"/></g>
+<rect x=".5" y=".5" width="559" height="239" rx="18" fill="none" stroke="#2c332f"/>
+</svg>

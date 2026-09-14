@@ -1,65 +1,76 @@
 <p align="center">
-  <img src="./assets/field-notes-039.png" width="100%" alt="Rishabh D. — Systems below the surface. An impossible knot of fiber-optic cables, documented like a specimen in a machine anatomy atlas." />
+  <picture>
+    <source media="(max-width: 640px)" srcset="./assets/observatory-mobile.svg" />
+    <img src="./assets/observatory.svg" width="100%" alt="Rishabh D. — The layer beneath intelligence. An animated silver event horizon. Architect. Artist. Scientist." />
+  </picture>
 </p>
 
 <p align="center">
-  <sub>FIELD RECORD 039 &nbsp; / &nbsp; AI INFRASTRUCTURE · NETWORKING · AUTONOMOUS SYSTEMS</sub>
+  <a href="#systems-in-orbit">Systems</a> &nbsp; / &nbsp;
+  <a href="#operating-principles">Principles</a> &nbsp; / &nbsp;
+  <a href="#instrument-drawer">Tools</a> &nbsp; / &nbsp;
+  <a href="#open-channel">Open channel</a>
 </p>
+
+<br />
 
 # I build the layer beneath the model.
 
-I'm **Rishabh D**. I work across AI infrastructure, distributed networking, autonomous agents, and low-level runtimes. My attention goes to the parts you usually don't see: **GPU fabrics, inference, orchestration, observability, and the machinery that makes execution possible**.
+I'm **Rishabh D**. I work across **AI infrastructure, networking, autonomous agents, and low-level runtimes**. My attention goes to the machinery that makes execution possible: GPU fabrics, inference, orchestration, and observability.
 
-<p>
-  <a href="https://github.com/rootuser39">GitHub ↗</a>
-  &nbsp;&nbsp; / &nbsp;&nbsp;
-  <a href="#01--specimen-index">Inspect the systems ↓</a>
+**Architect** the system. **Study** the mechanism. **Make** something worth looking at.
+
+<br />
+
+<sub>01 / THE WORK</sub>
+
+## Systems in orbit
+
+Experimental systems at different stages. Open a panel to inspect the work.
+
+<p align="center">
+  <a href="https://github.com/rootuser39/CorteX"><img src="./assets/cortex.svg" width="400" alt="CORTEX Ω — Experimental intelligence and compute architecture. Agents, inference, and runtimes. Open repository." /></a>
+  <a href="https://github.com/rootuser39/ARGUS-Autonomous-Runtime-for-Governed-User-Sovereignty"><img src="./assets/argus.svg" width="400" alt="ARGUS — Autonomous Runtime for Governed User Sovereignty. Planning, routing, and memory. Open repository." /></a>
+  <a href="https://github.com/rootuser39/ai-fabric-lab-"><img src="./assets/fabric.svg" width="400" alt="AI Fabric Lab — Synthetic congestion experiments, collective communication models, and telemetry tooling. Open repository." /></a>
+  <a href="https://github.com/rootuser39/AegisNet-AI-Network-Failure-Simulator-Auto-Diagnoser"><img src="./assets/aegisnet.svg" width="400" alt="AegisNet — Early scaffold for AI-assisted network failure simulation and diagnosis. Open repository." /></a>
 </p>
 
----
+<details>
+<summary><b>Read the technical briefs</b> &nbsp; <sub>what each system investigates</sub></summary>
 
-## 01 / Specimen index
+<br />
 
-Ongoing systems. Different scales. A shared interest in what happens after intent becomes execution.
+| System | Investigation | Enter here |
+| :--- | :--- | :--- |
+| **CORTEX Ω** | A vertically integrated experimental architecture connecting identity, agents, inference, adaptive services, and compute. | [Architecture & phases](https://github.com/rootuser39/CorteX#master-architecture) |
+| **ARGUS** | Intent reconstruction, planning, model routing, memory, and governed execution. | [Runtime repository](https://github.com/rootuser39/ARGUS-Autonomous-Runtime-for-Governed-User-Sovereignty) |
+| **AI Fabric Lab** | Synthetic incast experiments, NCCL log parsing, and congestion models. RoCEv2, InfiniBand, and GPU networking are the wider research scope. | [Run the experiments](https://github.com/rootuser39/ai-fabric-lab-/blob/main/docs/START_HERE.md) |
+| **AegisNet** | Early scaffold for network failure simulation and AI-assisted diagnosis. | [Inspect the scaffold](https://github.com/rootuser39/AegisNet-AI-Network-Failure-Simulator-Auto-Diagnoser) |
 
-| System | Inside the specimen |
+</details>
+
+<br />
+
+<sub>02 / HOW I WORK</sub>
+
+## Operating principles
+
+| Lens | The question |
 | :--- | :--- |
-| **Ⅰ · CORTEX** | A broader autonomous intelligence architecture connecting **agents, inference, runtimes, and compute infrastructure**. |
-| **Ⅱ · [ARGUS](https://github.com/rootuser39/ARGUS-Autonomous-Runtime-for-Governed-User-Sovereignty)** | Autonomous Runtime for Governed User Sovereignty. **Intent reconstruction, planning, model routing, memory, and governed execution.** |
-| **Ⅲ · [AI Fabric Lab](https://github.com/rootuser39/ai-fabric-lab-)** | Experiments in the physical conversation between accelerators. **GPU networking, RoCEv2, InfiniBand, congestion, and telemetry.** |
-| **Ⅳ · [AegisNet](https://github.com/rootuser39/AegisNet-AI-Network-Failure-Simulator-Auto-Diagnoser)** | AI-assisted network failure simulation and diagnosis. **Networking, automation, and troubleshooting.** |
+| **Architecture** | What has to exist beneath this for it to work? |
+| **Experiment** | What can I build to test the assumption? |
+| **Failure** | Where does it break, and what evidence explains why? |
+| **Craft** | Can the complexity become legible? |
 
-<br />
+**Currently exploring:** distributed AI systems · GPU networking · Linux internals · cybersecurity · systems programming.
 
-## 02 / Below the surface
+<p align="center">
+  <img src="./assets/signal.svg" width="100%" alt="Execution leaves a trace — a decorative animated signal." />
+</p>
 
-```text
-              INTENT
-                 │
-       reconstruct · plan
-                 │
-              RUNTIME
-                 │
-        route · orchestrate
-                 │
-              FABRIC
-                 │
-         connect · execute
-                 │
-              MACHINE
-                 │
-         observe · verify
-                 │
-        remember ↺ repeat
-```
+<sub>03 / THE BENCH</sub>
 
-**Currently digging into:** distributed AI systems, GPU networking, Linux internals, cybersecurity, and systems programming.
-
-> Build the runtime. Understand the system. Measure what actually happens.
-
-<br />
-
-## 03 / Instrument drawer
+## Instrument drawer
 
 <details>
 <summary><b>Open the drawer</b> &nbsp; <sub>languages / compute / infrastructure / data</sub></summary>
@@ -77,16 +88,22 @@ Ongoing systems. Different scales. A shared interest in what happens after inten
 
 <br />
 
-## 04 / Open channel
+<sub>04 / INTERSECTIONS</sub>
 
-Interested in technically serious work around **distributed inference, AI-fabric networking, agent runtimes, low-level execution, cybersecurity, and open-source systems research**.
+## Open channel
+
+Interested in technically serious collaboration around **distributed inference, AI fabrics, agent runtimes, low-level execution, cybersecurity, and open-source systems research**.
 
 If the problem lives somewhere between a model, a network, and a machine, I'd like to hear about it.
 
 **[Explore the repositories ↗](https://github.com/rootuser39?tab=repositories)**
 
+<br />
+
 ---
 
 <p align="center">
-  <sub>END OF FIELD RECORD &nbsp; / &nbsp; 039 &nbsp; / &nbsp; THE MACHINE CONTINUES BELOW.</sub>
+  <sub>FIELD RECORD 039 &nbsp; / &nbsp; THE MACHINE CONTINUES BELOW.</sub>
 </p>
+
+<!-- Artwork is self-contained, script-free SVG. Rebuild: python3 scripts/build_observatory.py -->
