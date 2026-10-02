@@ -158,7 +158,7 @@ def project_cards():
     cortex += '</g><path d="M 0 -76 V 83" fill="none" stroke="#bdacff" stroke-width="2" stroke-dasharray="4 16" class="signal"/>'
     card("cortex.svg","01","CORTEX Ω","Intelligence, from intent to compute.","AGENTS / INFERENCE / RUNTIMES",cortex)
     argus='<path d="M 0 -69 L 58 -46 V -4 C 58 33 30 58 0 76 C -30 58 -58 33 -58 -4 V -46 Z" fill="none" stroke="#8f809f" stroke-width="1.2"/>'
-    argus+='<path class="argus-eye" d="M -43 0 Q 0 -46 43 0 Q 0 46 -43 0 Z" fill="none" stroke="#d5cbe5" stroke-width="1.3"/><circle r="15" fill="none" stroke="#bdacff"/><circle r="5" fill="#bdacff" class="argus-pupil"/><path class="argus-scan" d="M -57 47 H 57" stroke="#bdacff" stroke-dasharray="6 9" class="signal"/>'
+    argus+='<path class="argus-eye" d="M -43 0 Q 0 -46 43 0 Q 0 46 -43 0 Z" fill="none" stroke="#d5cbe5" stroke-width="1.3"/><circle r="15" fill="none" stroke="#bdacff"/><circle r="5" fill="#bdacff" class="argus-pupil"/><path class="argus-scan signal" d="M -57 47 H 57" stroke="#bdacff" stroke-dasharray="6 9"/>'
     card("argus.svg","02","ARGUS","Intent. Permission. Execution.","PLANNING / ROUTING / MEMORY",argus)
     fabric=''
     for x in [-54,0,54]:

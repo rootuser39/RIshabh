@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import sys
 import unittest
+import xml.etree.ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
@@ -90,6 +91,10 @@ class ContentTests(unittest.TestCase):
         next(v for v in target['measurements'] if v['label']=='Delivered-packet p99')['value']=7
         rendered=build_lab.outputs(data)['index.html']
         self.assertIn('7 μs',rendered)
+
+    def test_svg_assets_are_well_formed(self):
+        for asset in (ROOT/'assets').rglob('*.svg'):
+            with self.subTest(asset=asset.name):ET.fromstring(asset.read_text())
 
     def test_generated_files_match_source(self):
         for name,value in build_lab.outputs(build_lab.load_content()).items():
