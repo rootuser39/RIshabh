@@ -1,10 +1,8 @@
 """Integrity and evidence-boundary checks for records and generated views."""
 
-import importlib.util
 import json
 from pathlib import Path
 import sys
-import tempfile
 import unittest
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -13,11 +11,26 @@ import build_lab
 
 
 class ContentTests(unittest.TestCase):
-    def test_evidence_and_references_validate(self):
+    def test_measurements_require_observed_provenance(self):
         data=build_lab.load_content()
-        self.assertEqual(len(data['systems']),4)
-        self.assertTrue(all(e['type']=='synthetic' for e in data['experiments']))
-        self.assertFalse(any(e['type']=='measured' for e in data['experiments']))
+        experiment={'id':'TEST-PROVENANCE','system':'observatory','type':'planned',
+                    'measurements':[{'label':'Fixture latency','value':1,'unit':'µs'}],
+                    'source':{'label':'Test fixture','url':'https://example.invalid/fixture'}}
+        data['experiments'].append(experiment)
+        with self.assertRaises(ValueError):
+            build_lab.validate_content(data)
+        experiment['type']='measured'
+        source=experiment.pop('source')
+        with self.assertRaises(ValueError):
+            build_lab.validate_content(data)
+        experiment['source']=source
+        build_lab.validate_content(data)
+
+    def test_unknown_system_references_are_rejected(self):
+        data=build_lab.load_content()
+        data['field-logs'].append({'id':'TEST-REFERENCE','system':'unrecorded-system'})
+        with self.assertRaises(ValueError):
+            build_lab.validate_content(data)
 
     def test_counts_are_from_content_not_fixed_ui_numbers(self):
         data=build_lab.load_content()
@@ -54,10 +67,8 @@ class ContentTests(unittest.TestCase):
                 build_lab.valid_url(value)
 
     def test_missing_completion_is_not_zero_or_success(self):
-        data=build_lab.load_content()
-        first=data['experiments'][0]
-        self.assertIsNone(first['measurements'][-1]['value'])
-        self.assertIn('Not completed',build_lab.metrics(first['measurements']))
+        metric={'label':'Job completion','value':None,'unit':'µs'}
+        self.assertIn('Not completed',build_lab.metrics([metric]))
 
     def test_generated_files_match_source(self):
         for name,value in build_lab.outputs(build_lab.load_content()).items():

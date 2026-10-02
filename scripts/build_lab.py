@@ -37,6 +37,10 @@ def valid_url(value):
 
 def load_content():
     data = {name: json.loads((ROOT / 'content' / f'{name}.json').read_text()) for name in NAMES}
+    return validate_content(data)
+
+
+def validate_content(data):
     systems = {item['id'] for item in data['systems']} | {'observatory'}
     for name in ('systems', 'experiments', 'field-logs', 'failures', 'questions', 'transmissions'):
         identifiers = [item['id'] for item in data[name]]
