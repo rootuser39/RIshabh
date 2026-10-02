@@ -1,7 +1,9 @@
 <p align="center">
   <picture>
+    <source media="(prefers-reduced-motion: reduce) and (max-width: 640px)" srcset="./assets/still/observatory-mobile.svg" />
+    <source media="(prefers-reduced-motion: reduce)" srcset="./assets/still/observatory.svg" />
     <source media="(max-width: 640px)" srcset="./assets/observatory-mobile.svg" />
-    <img src="./assets/observatory.svg" width="100%" alt="Rishabh D. — The layer beneath intelligence. An animated silver event horizon. Architect. Artist. Scientist." />
+    <img src="./assets/observatory.svg" width="100%" alt="Rishabh D. — The Void Observatory. A pixel-art Void Dragon with beating wings and cyan eyes hovers beside a silver event horizon. Architect. Artist. Scientist." />
   </picture>
 </p>
 
@@ -29,10 +31,10 @@ I'm **Rishabh D**. I work across **AI infrastructure, networking, autonomous age
 Experimental systems at different stages. Open a panel to inspect the work.
 
 <p align="center">
-  <a href="https://github.com/rootuser39/CorteX"><img src="./assets/cortex.svg" width="400" alt="CORTEX Ω — Experimental intelligence and compute architecture. Agents, inference, and runtimes. Open repository." /></a>
-  <a href="https://github.com/rootuser39/ARGUS-Autonomous-Runtime-for-Governed-User-Sovereignty"><img src="./assets/argus.svg" width="400" alt="ARGUS — Autonomous Runtime for Governed User Sovereignty. Planning, routing, and memory. Open repository." /></a>
-  <a href="https://github.com/rootuser39/ai-fabric-lab-"><img src="./assets/fabric.svg" width="400" alt="AI Fabric Lab — Synthetic congestion experiments, collective communication models, and telemetry tooling. Open repository." /></a>
-  <a href="https://github.com/rootuser39/AegisNet-AI-Network-Failure-Simulator-Auto-Diagnoser"><img src="./assets/aegisnet.svg" width="400" alt="AegisNet — Early scaffold for AI-assisted network failure simulation and diagnosis. Open repository." /></a>
+  <a href="https://github.com/rootuser39/CorteX"><picture><source media="(prefers-reduced-motion: reduce)" srcset="./assets/still/cortex.svg" /><img src="./assets/cortex.svg" width="400" alt="CORTEX Ω — Experimental intelligence and compute architecture. Agents, inference, and runtimes. Open repository." /></picture></a>
+  <a href="https://github.com/rootuser39/ARGUS-Autonomous-Runtime-for-Governed-User-Sovereignty"><picture><source media="(prefers-reduced-motion: reduce)" srcset="./assets/still/argus.svg" /><img src="./assets/argus.svg" width="400" alt="ARGUS — Autonomous Runtime for Governed User Sovereignty. Planning, routing, and memory. Open repository." /></picture></a>
+  <a href="https://github.com/rootuser39/ai-fabric-lab-"><picture><source media="(prefers-reduced-motion: reduce)" srcset="./assets/still/fabric.svg" /><img src="./assets/fabric.svg" width="400" alt="AI Fabric Lab — Synthetic congestion experiments, collective communication models, and telemetry tooling. Open repository." /></picture></a>
+  <a href="https://github.com/rootuser39/AegisNet-AI-Network-Failure-Simulator-Auto-Diagnoser"><picture><source media="(prefers-reduced-motion: reduce)" srcset="./assets/still/aegisnet.svg" /><img src="./assets/aegisnet.svg" width="400" alt="AegisNet — Early scaffold for AI-assisted network failure simulation and diagnosis. Open repository." /></picture></a>
 </p>
 
 <details>
@@ -65,7 +67,10 @@ Experimental systems at different stages. Open a panel to inspect the work.
 **Currently exploring:** distributed AI systems · GPU networking · Linux internals · cybersecurity · systems programming.
 
 <p align="center">
-  <img src="./assets/signal.svg" width="100%" alt="Execution leaves a trace — a decorative animated signal." />
+  <picture>
+    <source media="(prefers-reduced-motion: reduce)" srcset="./assets/still/signal.svg" />
+    <img src="./assets/signal.svg" width="100%" alt="Execution leaves a trace — a decorative animated signal." />
+  </picture>
 </p>
 
 <sub>03 / THE BENCH</sub>
@@ -103,7 +108,16 @@ If the problem lives somewhere between a model, a network, and a machine, I'd li
 ---
 
 <p align="center">
-  <sub>FIELD RECORD 039 &nbsp; / &nbsp; THE MACHINE CONTINUES BELOW.</sub>
+  <picture>
+    <source media="(prefers-reduced-motion: reduce) and (max-width: 640px)" srcset="./assets/still/void-footer-mobile.svg" />
+    <source media="(prefers-reduced-motion: reduce)" srcset="./assets/still/void-footer.svg" />
+    <source media="(max-width: 640px)" srcset="./assets/void-footer-mobile.svg" />
+    <img src="./assets/void-footer.svg" width="100%" alt="Curiosity has teeth. The animated pixel-art Void Dragon returns at the edge of the observatory. Follow the signal. Build what's underneath." />
+  </picture>
+</p>
+
+<p align="center">
+  <sub><a href="./assets/void-dragon.svg">Meet the Void Dragon</a> &nbsp; / &nbsp; THE MACHINE CONTINUES BELOW.</sub>
 </p>
 
 <!-- Artwork is self-contained, script-free SVG. Rebuild: python3 scripts/build_observatory.py -->
