@@ -63,14 +63,14 @@
     const frames=points.map((p,i)=>({transform:'translate('+p[0]+'px,'+p[1]+'px)',offset:i/(points.length-1)}));
     const ok=await animate(t,node,frames,duration);node.remove();return ok;
   }
-  function relocate(name,pose='observing'){
+  function relocate(name,pose='observing',restore=false){
     if(terminalActive&&name!=='terminal')return;
     const zone=document.querySelector('[data-perch="'+name+'"]')||document.querySelector('[data-perch="home"]');
-    if(!zone||!inView(zone)||resident.contains(document.activeElement))return;
+    if(!zone||(!restore&&!inView(zone))||resident.contains(document.activeElement))return;
     const old=resident.closest('[data-perch]');
     if(old!==zone){old?.setAttribute('aria-hidden','true');zone.removeAttribute('aria-hidden');zone.append(resident);}
     pet.classList.toggle('motion-visible',inView(pet));
-    if(canMove()&&name!=='home'){
+    if(canMove()&&inView(zone)&&name!=='home'&&!restore){
       state('walking');
       const a=resident.animate([{transform:'translateX(-6px)'},{transform:'translateX(-3px)'},{transform:'translateX(0)'}],{duration:480,easing:'linear'});
       a.finished.then(()=>{if(pet.dataset.state==='walking')state(pose,2500);}).catch(()=>{});
@@ -173,7 +173,7 @@
     const selected=new Set();
     for(const route of fabricPaths(fabric.dataset.mode))for(let i=0;i<route.length-1;i++)selected.add([route[i],route[i+1]].sort().join(':'));
     for(let i=0;i<4;i++)for(let j=0;j<2;j++){
-      const a='g'+i,b='s'+j;plane.append(svg('path',{d:'M '+p[a].join(' ')+' L '+p[b].join(' '),class:selected.has([a,b].sort().join(':'))?'selected':''}));
+      const a='g'+i,b='s'+j;plane.append(svg('path',{d:'M '+p[a].join(' ')+' L '+p[b].join(' '),class:(fabric.dataset.mode==='collective'||selected.has([a,b].sort().join(':')))?'selected':''}));
     }
     plane.append(svg('path',{d:'M '+p.s0.join(' ')+' L '+p.s1.join(' '),class:fabric.dataset.mode==='adaptive'?'selected':''}));
   }
@@ -210,7 +210,7 @@
       status(fabric,mode==='normal'?'Two independent flows / paths in motion.':'Three flows / converging on GPU 3.');
       if(!(await travelRoutes(t,fabricPaths(mode))).every(Boolean))return;
       if(mode!=='normal'){queue(3);status(fabric,'Receiver pressure / synchronized arrivals share a queue.');if(!await wait(t,500))return;}
-      if(mode==='congestion'){queue(5,true);status(fabric,'Full illustrative queue / next arrival rejected.');state('alert',1700);if(!await wait(t,850))return;}
+      if(mode==='congestion'){status(fabric,'Another illustrative burst / pressure accumulates at the receiver.');if(!(await travelRoutes(t,fabricPaths(mode))).every(Boolean))return;queue(5,true);status(fabric,'Full illustrative queue / next arrival rejected.');state('alert',1700);if(!await wait(t,850))return;}
       if(mode==='adaptive'){status(fabric,'Alternate links selected / shared receiver bottleneck remains.');if(!await wait(t,850))return;}
     }
     staticFabric();state('observing',1800);finish(t);
@@ -240,7 +240,7 @@
     for(const [a,b] of content.depth.edges){
       const an=board.querySelector('[data-domain="'+a+'"]'),bn=board.querySelector('[data-domain="'+b+'"]');
       const ar=an.getBoundingClientRect(),br=bn.getBoundingClientRect();
-      plane.append(svg('path',{d:'M '+(ar.left-r.left+ar.width/2)+' '+(ar.top-r.top+ar.height/2)+' L '+(br.left-r.left+br.width/2)+' '+(br.top-r.top+br.height/2),'data-from':a,'data-to':b}));
+      plane.append(svg('path',{d:'M '+(ar.left-r.left+ar.width/2)+' '+(ar.top-r.top+ar.height/2)+' L '+(br.left-r.left+br.width/2)+' '+(br.top-r.top+br.height/2),pathLength:1,'data-from':a,'data-to':b}));
     }
   }
   function selectDepth(id,explicit=false){
@@ -249,7 +249,11 @@
     all('[data-domain]').forEach(node=>{node.setAttribute('aria-pressed',String(node.dataset.domain===id));node.classList.toggle('connected',connected.has(node.dataset.domain));node.classList.toggle('unrelated',!connected.has(node.dataset.domain));});
     all('.depth-board path').forEach(node=>node.classList.toggle('connected',node.dataset.from===id||node.dataset.to===id));
     document.getElementById('depth-note').textContent=domain.name+' / '+domain.state+'. '+domain.description+' Connected questions: '+content.depth.domains.filter(v=>v.id!==id&&connected.has(v.id)).map(v=>v.name).join(' · ')+'. '+content.depth.boundary;
-    if(explicit)react('investigating');
+    if(explicit){
+      react('investigating');
+      const board=document.querySelector('.depth-board'),t=begin(board);
+      if(t){Promise.all(all('path.connected',board).map(node=>animate(t,node,[{strokeDasharray:'1',strokeDashoffset:'1'},{strokeDasharray:'1',strokeDashoffset:'0'}],850))).then(()=>finish(t));}
+    }
   }
   all('[data-domain]').forEach(button=>{
     button.addEventListener('click',()=>selectDepth(button.dataset.domain,true));
@@ -338,7 +342,7 @@
   function terminal(value){
     terminalActive=value;
     if(value){priorPerch=resident.closest('[data-perch]')?.dataset.perch||'home';relocate('terminal','observing');}
-    else{terminalActive=false;relocate(priorPerch,'idle');}
+    else{terminalActive=false;relocate(priorPerch,'idle',true);}
   }
   async function dragonCommand(){
     state('investigating',2200);

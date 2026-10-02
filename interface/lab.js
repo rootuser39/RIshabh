@@ -30,6 +30,22 @@
     if (pet.dataset.state === 'sleeping') state('idle');
     if (!document.hidden) inactivityTimer = setTimeout(() => state('sleeping'), 90000);
   }
+  function updatePictures() {
+    for(const source of document.querySelectorAll('source[data-motion-media]')) {
+      const original=source.dataset.motionMedia;
+      const closing=source.closest('.closing-art');
+      const still=paused||document.hidden||!!source.closest('.art-fallback')||(closing&&!closing.classList.contains('motion-visible'));
+      source.media=still?original.replace('(prefers-reduced-motion: reduce) and ','').replace('(prefers-reduced-motion: reduce)','all'):original;
+    }
+  }
+  if('IntersectionObserver' in window) {
+    const observer=new IntersectionObserver(entries=>{
+      for(const entry of entries)entry.target.classList.toggle('motion-visible',entry.isIntersecting);
+      updatePictures();
+    });
+    for(const closing of document.querySelectorAll('.closing-art'))observer.observe(closing);
+  } else for(const closing of document.querySelectorAll('.closing-art'))closing.classList.add('motion-visible');
+
   function updateMotion() {
     const stopped = paused || reduced.matches;
     root.classList.toggle('motion-off', stopped);
@@ -39,10 +55,7 @@
       button.disabled=reduced.matches;
     }
     window.VoidLab?.setMotion(stopped);
-    for (const source of document.querySelectorAll('source[data-motion-media]')) {
-      const original = source.dataset.motionMedia;
-      source.media = paused ? original.replace('(prefers-reduced-motion: reduce) and ', '').replace('(prefers-reduced-motion: reduce)', 'all') : original;
-    }
+    updatePictures();
   }
   for(const button of document.querySelectorAll('#motion-toggle,.motion-short')) button.addEventListener('click', () => {
     paused = !paused;
@@ -59,6 +72,7 @@
   document.addEventListener('pointerdown', resetInactivity, {passive:true});
   document.addEventListener('keydown', resetInactivity);
   document.addEventListener('visibilitychange', () => {
+    updatePictures();
     if(window.VoidLab) return;
     root.classList.toggle('page-away', document.hidden);
     if(document.hidden) { clearTimeout(inactivityTimer); state('sleeping'); }

@@ -149,13 +149,13 @@ let server;
   assert(still1.equals(still2),'Still image stays still');
   assert.equal(await page.evaluate(()=>document.getAnimations().filter(a=>a.playState==='running').length),0,'Inline motion is stopped too');
   await page.locator('#motion-toggle').click();
-  assert(await page.locator('.hero-art img').evaluate(img=>!img.currentSrc.includes('/still/')),'Normal artwork restored');
+  assert(await page.locator('.hero-art img').evaluate(img=>img.currentSrc.includes('/still/')),'Hidden fallback stays animation-free; inline artwork owns motion');
   await hero.scrollIntoViewIfNeeded();
   await page.waitForTimeout(350);
   const animated1=await hero.screenshot();
   await page.waitForTimeout(450);
   const animated2=await hero.screenshot();
-  assert(!animated1.equals(animated2),'Normal embedded artwork animates under the content security policy');
+  assert(!animated1.equals(animated2),'Controlled inline artwork animates under the content security policy');
 
 
   await page.locator('#fabric-console [data-mode="incast"]').click();

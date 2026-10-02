@@ -31,12 +31,14 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: git diff --exit-code -- assets README.md index.html content/derived.json
       - name: Install browser verification tooling
+        timeout-minutes: 3
         run: |
           npm install --prefix /tmp/lab-browser --no-audit --no-fund playwright@1.56.1
-          /tmp/lab-browser/node_modules/.bin/playwright install --with-deps chromium
+          test -x /usr/bin/google-chrome
       - name: Verify concepts, layouts and motion lifecycle
         env:
           CODEX_PRIMARY_RUNTIME_NODE_MODULES: /tmp/lab-browser/node_modules
+          LAB_CHROMIUM_PATH: /usr/bin/google-chrome
         run: node tests/browser.cjs
       - name: Preserve review screenshots
         if: always()
