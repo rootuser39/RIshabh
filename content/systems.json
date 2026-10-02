@@ -1,0 +1,181 @@
+[
+  {
+    "id": "cortex",
+    "name": "CORTEX Ω",
+    "asset": "cortex.svg",
+    "thesis": "An architectural umbrella from intent to compute.",
+    "state": "ARCHITECTURAL SCOPE",
+    "question": "How can identity, agents, inference and compute form a coherent architecture?",
+    "why": "A model interface alone leaves the execution machinery and its relationships unexplained.",
+    "architecture": [
+      "Identity / intent",
+      "Agent runtime",
+      "Inference",
+      "Adaptive services",
+      "Compute"
+    ],
+    "built": [],
+    "investigating": "Public implementation evidence is not included here. The linked source repository is access-restricted.",
+    "nextExperiment": "Not yet documented in the public portfolio.",
+    "failures": [],
+    "evidence": [
+      {
+        "label": "Existing public architecture summary",
+        "url": "https://github.com/rootuser39/RIshabh/blob/01816b84cde088f93c2d1f2da9cbf04e1f44909d/README.md"
+      },
+      {
+        "label": "Architecture repository · access may be required",
+        "url": "https://github.com/rootuser39/CorteX"
+      }
+    ],
+    "boundary": "Architecture scope, not a claim that the layers are integrated or operational.",
+    "layers": [
+      "intent",
+      "agent",
+      "runtime",
+      "model",
+      "gpu"
+    ],
+    "sourceDate": null
+  },
+  {
+    "id": "argus",
+    "name": "ARGUS",
+    "asset": "argus.svg",
+    "thesis": "Make a request’s execution path explicit and inspectable.",
+    "state": "PROTOTYPE",
+    "question": "Can intent, planning, routing and memory remain visible through an inference run?",
+    "why": "Hidden execution and disposable chat state make it difficult to inspect what a runtime did.",
+    "architecture": [
+      "Request",
+      "Intent",
+      "Plan",
+      "Model route",
+      "Inference provider",
+      "Output check",
+      "JSONL memory"
+    ],
+    "built": [
+      "Structured intent and plans",
+      "Model-tier routing",
+      "Deterministic stub and Nebius provider adapters",
+      "Provider, model, latency and token fields in the execution trace",
+      "JSONL memory writes after the output check"
+    ],
+    "investigating": "Semantic verification, capability/approval policy and sandboxed tool execution remain planned modules.",
+    "nextExperiment": "Planned: test how verification gates memory when provider output is empty or misleading.",
+    "failures": [],
+    "evidence": [
+      {
+        "label": "Execution spine",
+        "url": "https://github.com/rootuser39/ARGUS-Autonomous-Runtime-for-Governed-User-Sovereignty/blob/8b8997ee747e7294947ae5779ede8099c193849f/argus/core/orchestrator.py"
+      },
+      {
+        "label": "Trace model",
+        "url": "https://github.com/rootuser39/ARGUS-Autonomous-Runtime-for-Governed-User-Sovereignty/blob/8b8997ee747e7294947ae5779ede8099c193849f/argus/core/models.py"
+      },
+      {
+        "label": "Deterministic tests",
+        "url": "https://github.com/rootuser39/ARGUS-Autonomous-Runtime-for-Governed-User-Sovereignty/blob/8b8997ee747e7294947ae5779ede8099c193849f/tests/test_core_loop.py"
+      },
+      {
+        "label": "Architecture and planned modules",
+        "url": "https://github.com/rootuser39/ARGUS-Autonomous-Runtime-for-Governed-User-Sovereignty/blob/8b8997ee747e7294947ae5779ede8099c193849f/README.md"
+      }
+    ],
+    "boundary": "The current verifier checks non-empty output. It does not establish correctness, implemented tool governance or production readiness.",
+    "layers": [
+      "intent",
+      "agent",
+      "runtime",
+      "model"
+    ],
+    "sourceDate": "2026-09-13"
+  },
+  {
+    "id": "fabric",
+    "name": "AI FABRIC LAB",
+    "asset": "fabric.svg",
+    "thesis": "Treat communication behavior as part of compute.",
+    "state": "SYNTHETIC EXPERIMENTS",
+    "question": "What actually happens between GPUs when a distributed job scales beyond one machine?",
+    "why": "Average link load can conceal synchronization, finite buffering and loss at a bottleneck.",
+    "architecture": [
+      "Deterministic arrivals",
+      "FIFO server + finite capacity",
+      "Accepted / dropped packets",
+      "Latency + delivery counters",
+      "JSON results"
+    ],
+    "built": [
+      "Deterministic incast model and four counterfactuals",
+      "Classic NCCL stdout parser that preserves both result modes",
+      "Packet conservation and parser validation tests",
+      "Workshop material and a hardware validation protocol"
+    ],
+    "investigating": "Separating model artifacts from transport behavior, and moving from synthetic outcomes to authorized hardware measurements.",
+    "nextExperiment": "Planned: establish a repeatable two-GPU baseline, retain raw logs and correctness settings, then isolate one factor.",
+    "failures": [],
+    "evidence": [
+      {
+        "label": "Reproduce the suite",
+        "url": "https://github.com/rootuser39/ai-fabric-lab-/blob/543698ea954aaf5c4bcf48bd26ef351331f5da20/docs/START_HERE.md"
+      },
+      {
+        "label": "Model contract",
+        "url": "https://github.com/rootuser39/ai-fabric-lab-/blob/543698ea954aaf5c4bcf48bd26ef351331f5da20/docs/MODEL.md"
+      },
+      {
+        "label": "Recorded synthetic results",
+        "url": "https://github.com/rootuser39/ai-fabric-lab-/blob/543698ea954aaf5c4bcf48bd26ef351331f5da20/docs/VERIFICATION.md"
+      },
+      {
+        "label": "Hardware protocol",
+        "url": "https://github.com/rootuser39/ai-fabric-lab-/blob/543698ea954aaf5c4bcf48bd26ef351331f5da20/docs/HARDWARE_VALIDATION.md"
+      }
+    ],
+    "boundary": "Single-bottleneck synthetic model. No RDMA feedback, GPU timing or real NIC measurements. The NCCL fixture is invented parser-test input.",
+    "layers": [
+      "gpu",
+      "fabric"
+    ],
+    "sourceDate": "2026-09-11"
+  },
+  {
+    "id": "aegis",
+    "name": "AEGISNET",
+    "asset": "aegisnet.svg",
+    "thesis": "Connect fault evidence to a diagnosis that can be inspected.",
+    "state": "SCAFFOLD",
+    "question": "What evidence would let a network diagnosis explain a failure and its proposed fix?",
+    "why": "A diagnosis needs a structured record of symptoms, telemetry and evidence before it can be tested.",
+    "architecture": [
+      "Scenario request schema",
+      "Simulation / telemetry schema",
+      "Analysis request schema",
+      "Diagnosis / evidence schema"
+    ],
+    "built": [
+      "Pydantic models for scenario, simulation, telemetry and diagnosis payloads"
+    ],
+    "investigating": "The simulator, parser, rules, LLM adapter, application entrypoint and frontend are empty stubs at the reviewed revision.",
+    "nextExperiment": "Planned: implement one deterministic scenario and a parser before claiming an end-to-end diagnosis.",
+    "failures": [],
+    "evidence": [
+      {
+        "label": "Implemented schemas",
+        "url": "https://github.com/rootuser39/AegisNet-AI-Network-Failure-Simulator-Auto-Diagnoser/blob/4515448ab6ca08785803a699762703150c874e8b/backend/app/models/schemas.py"
+      },
+      {
+        "label": "Inspect the repository scaffold",
+        "url": "https://github.com/rootuser39/AegisNet-AI-Network-Failure-Simulator-Auto-Diagnoser/tree/4515448ab6ca08785803a699762703150c874e8b"
+      }
+    ],
+    "boundary": "Schemas are implemented; a working simulator, API or analyzer is not documented.",
+    "layers": [
+      "fabric",
+      "kernel"
+    ],
+    "sourceDate": "2026-02-18"
+  }
+]

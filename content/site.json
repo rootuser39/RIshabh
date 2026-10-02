@@ -1,0 +1,45 @@
+{
+  "title": "Void Observatory",
+  "name": "Rishabh D.",
+  "record": "FIELD RECORD / 039",
+  "statement": "I build the layer beneath the model.",
+  "intro": "I investigate what happens between a model request and the hardware that executes it. My work connects AI infrastructure, networking, autonomous agents and the runtimes beneath them.",
+  "principles": [
+    {
+      "name": "Architecture",
+      "question": "What has to exist beneath this for it to work?"
+    },
+    {
+      "name": "Experiment",
+      "question": "What can I build to test the assumption?"
+    },
+    {
+      "name": "Failure",
+      "question": "Where does it break, and what evidence explains why?"
+    },
+    {
+      "name": "Craft",
+      "question": "Can the complexity become legible?"
+    }
+  ],
+  "channel": {
+    "intro": "If the problem lives somewhere between a model, a network and a machine, I’d like to hear about it.",
+    "reasons": [
+      "Distributed inference experiments",
+      "GPU communication and congestion",
+      "Agent and runtime architecture",
+      "Kernel instrumentation and failure analysis",
+      "Open-source systems research"
+    ],
+    "protocol": [
+      "The problem and its context",
+      "What you have tried or observed",
+      "The kind of collaboration you are looking for"
+    ],
+    "url": "https://github.com/rootuser39?tab=repositories"
+  },
+  "hosting": {
+    "enabled": false,
+    "url": null
+  }
+}

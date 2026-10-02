@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Rishabh’s Void Observatory: inspectable systems, reproducible experiments, field notes and failure records beneath the model.">
+  <meta http-equiv="Content-Security-Policy" content="@@CSP@@">
+  <title>Void Observatory — Rishabh D.</title>
+  <link rel="icon" href="assets/omega.svg" type="image/svg+xml">
+  <style>@@CSS@@</style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to laboratory records</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="wordmark" href="#identity">VOID OBSERVATORY <span>FIELD RECORD / 039</span></a>
+      <nav aria-label="Laboratory navigation">
+        <a href="#signal">Signal</a><a href="#systems">Systems</a><a href="#evidence">Evidence</a><a href="#questions">Questions</a><a href="#bench">Bench</a><a href="#channel">Channel</a>
+      </nav>
+      <button class="omega-trigger enhancement" type="button" aria-label="Omega. Five activations open the Abyss terminal." title="A quiet extra channel">Ω</button>
+    </div>
+  </header>
+  <main id="main" class="shell" tabindex="-1">@@BODY@@</main>
+  <dialog id="abyss-terminal" class="terminal" aria-labelledby="terminal-title">
+    <header><div><p class="eyebrow">EXTRA CHANNEL / Ω</p><h2 id="terminal-title">Abyss terminal</h2></div><button type="button" id="terminal-close" aria-label="Close Abyss terminal">×</button></header>
+    <pre id="terminal-output" role="log" aria-live="polite" aria-relevant="additions text">FIELD RECORD / 039
+Read-only observatory terminal. Type help.</pre>
+    <form id="terminal-form"><label for="terminal-command" class="sr-only">Terminal command</label><span aria-hidden="true">&gt;</span><input id="terminal-command" type="text" maxlength="80" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="help"><button type="submit">Send</button></form>
+    <p class="terminal-hint">Escape closes the channel. Commands inspect these records; no shell execution.</p>
+  </dialog>
+  <script id="lab-content" type="application/json">@@DATA@@</script>
+  <script>@@JS@@</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "updated": "2026-10-02",
+  "sourceReviewed": "2026-10-02",
+  "basis": "Content-derived counts, not live activity",
+  "counts": {
+    "systems": 4,
+    "experiments": 4,
+    "fieldLogs": 2,
+    "failures": 1,
+    "transmissions": 2
+  }
+}

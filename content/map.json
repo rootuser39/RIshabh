@@ -1,0 +1,92 @@
+{
+  "boundary": "This is a map of architectural scope and research relationships, not a deployed dependency graph.",
+  "relationships": [
+    {
+      "from": "cortex",
+      "to": "argus",
+      "kind": "ARCHITECTURAL SCOPE",
+      "description": "ARGUS documents itself as a standalone subsystem of the broader CORTEX architecture.",
+      "source": {
+        "label": "Documented scope",
+        "url": "https://github.com/rootuser39/ARGUS-Autonomous-Runtime-for-Governed-User-Sovereignty/blob/8b8997ee747e7294947ae5779ede8099c193849f/README.md"
+      }
+    },
+    {
+      "from": "fabric",
+      "to": "aegis",
+      "kind": "SHARED QUESTION",
+      "description": "Communication behavior and failure evidence meet at observability. Runtime integration is not documented.",
+      "source": null
+    }
+  ],
+  "layers": [
+    {
+      "id": "intent",
+      "name": "INTENT",
+      "question": "What is the request asking the system to do?",
+      "systems": [
+        "argus",
+        "cortex"
+      ]
+    },
+    {
+      "id": "agent",
+      "name": "AGENT",
+      "question": "How does an objective become a plan?",
+      "systems": [
+        "argus",
+        "cortex"
+      ]
+    },
+    {
+      "id": "runtime",
+      "name": "RUNTIME",
+      "question": "What executes, verifies and remembers?",
+      "systems": [
+        "argus",
+        "cortex"
+      ]
+    },
+    {
+      "id": "model",
+      "name": "MODEL",
+      "question": "Which provider or model tier should execute the request?",
+      "systems": [
+        "argus",
+        "cortex"
+      ]
+    },
+    {
+      "id": "gpu",
+      "name": "GPU",
+      "question": "Where does execution meet the memory hierarchy?",
+      "systems": [
+        "fabric",
+        "cortex"
+      ]
+    },
+    {
+      "id": "fabric",
+      "name": "FABRIC",
+      "question": "What does communication do to the execution path?",
+      "systems": [
+        "fabric",
+        "aegis"
+      ]
+    },
+    {
+      "id": "kernel",
+      "name": "KERNEL",
+      "question": "What can the host observe and control?",
+      "systems": [
+        "aegis"
+      ]
+    },
+    {
+      "id": "silicon",
+      "name": "SILICON",
+      "question": "Which hardware assumptions remain untested?",
+      "systems": []
+    }
+  ]
+}

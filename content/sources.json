@@ -1,0 +1,31 @@
+{
+  "reviewed": "2026-10-02",
+  "mode": "Pinned public source review; no realtime API",
+  "repositories": [
+    {
+      "id": "argus",
+      "name": "rootuser39/ARGUS-Autonomous-Runtime-for-Governed-User-Sovereignty",
+      "revision": "8b8997ee747e7294947ae5779ede8099c193849f",
+      "committed": "2026-09-13T11:13:46Z"
+    },
+    {
+      "id": "fabric",
+      "name": "rootuser39/ai-fabric-lab-",
+      "revision": "543698ea954aaf5c4bcf48bd26ef351331f5da20",
+      "committed": "2026-09-11T21:16:00Z"
+    },
+    {
+      "id": "aegis",
+      "name": "rootuser39/AegisNet-AI-Network-Failure-Simulator-Auto-Diagnoser",
+      "revision": "4515448ab6ca08785803a699762703150c874e8b",
+      "committed": "2026-02-18T22:50:58Z"
+    },
+    {
+      "id": "profile",
+      "name": "rootuser39/RIshabh",
+      "revision": "01816b84cde088f93c2d1f2da9cbf04e1f44909d",
+      "committed": "2026-10-02T12:26:20Z"
+    }
+  ],
+  "privateSources": "CORTEX is represented only by the pre-existing public portfolio summary; no private implementation content is copied."
+}

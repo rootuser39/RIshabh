@@ -1,0 +1,26 @@
+[
+  {
+    "id": "T-001",
+    "system": "fabric",
+    "title": "NCCL All-Reduce: Network-Centric View",
+    "abstract": "A collective is an algorithm and a traffic generator. Inspect how logical rings and trees meet physical paths.",
+    "date": null,
+    "type": "EXISTING TECHNICAL NOTE",
+    "source": {
+      "label": "Read the note",
+      "url": "https://github.com/rootuser39/ai-fabric-lab-/blob/543698ea954aaf5c4bcf48bd26ef351331f5da20/collectives/nccl-allreduce.md"
+    }
+  },
+  {
+    "id": "T-002",
+    "system": "fabric",
+    "title": "Tail Latency and Incast in AI Fabrics",
+    "abstract": "Follow the chain from a network event to an application stall, rather than interpreting an isolated counter.",
+    "date": null,
+    "type": "EXISTING TECHNICAL NOTE",
+    "source": {
+      "label": "Read the note",
+      "url": "https://github.com/rootuser39/ai-fabric-lab-/blob/543698ea954aaf5c4bcf48bd26ef351331f5da20/networking/tail-latency-and-incast.md"
+    }
+  }
+]

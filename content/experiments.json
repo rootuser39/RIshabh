@@ -1,0 +1,142 @@
+[
+  {
+    "id": "E-001",
+    "system": "fabric",
+    "date": "2026-09-11",
+    "title": "Synchronized arrivals at modest average load",
+    "type": "synthetic",
+    "status": "RECORDED",
+    "question": "Can finite buffering drop traffic even when average offered load is below capacity?",
+    "command": "python -m fabriclab suite",
+    "observation": "The synchronized case loses half its offered packets under the stated FIFO model.",
+    "measurements": [
+      {
+        "label": "Dropped / sent",
+        "value": "256 / 512",
+        "unit": "packets"
+      },
+      {
+        "label": "Delivered-packet p99",
+        "value": 4,
+        "unit": "μs"
+      },
+      {
+        "label": "All-packet completion",
+        "value": null,
+        "unit": "μs"
+      }
+    ],
+    "hypothesis": "Instantaneous bursts, rather than the average rate alone, exceed the available capacity.",
+    "nextExperiment": "Compare uniformly staggered arrivals with all other model settings fixed.",
+    "source": {
+      "label": "Recorded model output",
+      "url": "https://github.com/rootuser39/ai-fabric-lab-/blob/543698ea954aaf5c4bcf48bd26ef351331f5da20/docs/VERIFICATION.md"
+    },
+    "limits": "Nearest-rank p99 covers accepted packets only; no hardware run."
+  },
+  {
+    "id": "E-002",
+    "system": "fabric",
+    "date": "2026-09-11",
+    "title": "Same load, different synchronization",
+    "type": "synthetic",
+    "status": "RECORDED",
+    "question": "What changes when the same senders start at different phases?",
+    "command": "python -m fabriclab incast --staggered",
+    "observation": "Uniform phasing delivers all offered packets in the reference model.",
+    "measurements": [
+      {
+        "label": "Dropped / sent",
+        "value": "0 / 512",
+        "unit": "packets"
+      },
+      {
+        "label": "Delivered-packet p99",
+        "value": 1,
+        "unit": "μs"
+      },
+      {
+        "label": "All-packet completion",
+        "value": 1023,
+        "unit": "μs"
+      }
+    ],
+    "hypothesis": "Reducing coincident arrivals reduces queueing pressure without adding capacity.",
+    "nextExperiment": "Hold phasing constant and shorten the sender interval to test sustained overload.",
+    "source": {
+      "label": "Recorded model output",
+      "url": "https://github.com/rootuser39/ai-fabric-lab-/blob/543698ea954aaf5c4bcf48bd26ef351331f5da20/docs/VERIFICATION.md"
+    },
+    "limits": "Staggering is not a free optimization available to every real workload."
+  },
+  {
+    "id": "E-003",
+    "system": "fabric",
+    "date": "2026-09-11",
+    "title": "A larger buffer changes the question",
+    "type": "synthetic",
+    "status": "RECORDED",
+    "question": "Does eliminating drops also improve the delivered-packet tail?",
+    "command": "python -m fabriclab incast --capacity 8",
+    "observation": "All packets are delivered, but the delivered-packet p99 increases.",
+    "measurements": [
+      {
+        "label": "Dropped / sent",
+        "value": "0 / 512",
+        "unit": "packets"
+      },
+      {
+        "label": "Delivered-packet p99",
+        "value": 8,
+        "unit": "μs"
+      },
+      {
+        "label": "All-packet completion",
+        "value": 1016,
+        "unit": "μs"
+      }
+    ],
+    "hypothesis": "A bigger buffer can retain packets that would otherwise disappear from the latency sample.",
+    "nextExperiment": "Compare completion and loss alongside latency; do not rank cases by p99 alone.",
+    "source": {
+      "label": "Recorded model output",
+      "url": "https://github.com/rootuser39/ai-fabric-lab-/blob/543698ea954aaf5c4bcf48bd26ef351331f5da20/docs/VERIFICATION.md"
+    },
+    "limits": "Capacity includes the packet being serviced, not just the waiting queue."
+  },
+  {
+    "id": "E-004",
+    "system": "fabric",
+    "date": "2026-09-11",
+    "title": "Phasing cannot create capacity",
+    "type": "synthetic",
+    "status": "RECORDED",
+    "question": "Can staggered senders overcome sustained overload?",
+    "command": "python -m fabriclab incast --staggered --interval-us 4",
+    "observation": "Loss persists in the sustained-overload reference case.",
+    "measurements": [
+      {
+        "label": "Dropped / sent",
+        "value": "253 / 512",
+        "unit": "packets"
+      },
+      {
+        "label": "Delivered-packet p99",
+        "value": 4,
+        "unit": "μs"
+      },
+      {
+        "label": "All-packet completion",
+        "value": null,
+        "unit": "μs"
+      }
+    ],
+    "hypothesis": "Phasing can reshape bursts but cannot change the server’s service-rate bound.",
+    "nextExperiment": "Planned: test the model’s assumptions against a controlled hardware baseline.",
+    "source": {
+      "label": "Recorded model output",
+      "url": "https://github.com/rootuser39/ai-fabric-lab-/blob/543698ea954aaf5c4bcf48bd26ef351331f5da20/docs/VERIFICATION.md"
+    },
+    "limits": "Synthetic FIFO outcome; not an NCCL completion estimate or a real GPU performance result."
+  }
+]

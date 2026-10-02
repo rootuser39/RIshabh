@@ -1,0 +1,24 @@
+[
+  {
+    "id": "F-001",
+    "system": "observatory",
+    "date": "2026-10-02",
+    "title": "Motion preference stopped at the image boundary",
+    "symptom": "The embedded animated SVG continued moving after the host page’s reduced-motion preference changed in local Chromium verification.",
+    "initialHypothesis": "The SVG’s internal reduced-motion CSS would behave the same as when the SVG was opened directly.",
+    "rootCause": "Observed media-preference propagation inconsistency in the image context. The browser’s internal cause was not established.",
+    "evidence": [
+      {
+        "label": "Failure record and verification",
+        "url": "docs/records/F-001.md"
+      },
+      {
+        "label": "Regression check",
+        "url": "tests/browser.cjs"
+      }
+    ],
+    "fix": "Select separately generated animation-free SVGs through the host picture element, and stop inline companion animations.",
+    "lesson": "Verify accessibility in the actual embedding context, not only in the standalone asset.",
+    "status": "RESOLVED"
+  }
+]

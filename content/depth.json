@@ -1,0 +1,85 @@
+{
+  "legend": [
+    {
+      "symbol": "○",
+      "state": "UNEXPLORED",
+      "meaning": "No documented exploration yet."
+    },
+    {
+      "symbol": "◔",
+      "state": "ORIENTING",
+      "meaning": "Scope or architectural notes; implementation evidence is limited."
+    },
+    {
+      "symbol": "◐",
+      "state": "ACTIVE",
+      "meaning": "A documented investigation or experiment."
+    },
+    {
+      "symbol": "●",
+      "state": "OPERATIONAL",
+      "meaning": "A repeatable operation with a stated boundary."
+    },
+    {
+      "symbol": "◆",
+      "state": "BUILT WITH",
+      "meaning": "Implemented pieces exist; this is not an expertise score."
+    }
+  ],
+  "domains": [
+    {
+      "name": "Agent runtimes",
+      "state": "BUILT WITH",
+      "system": "argus",
+      "description": "An inspectable inference spine, with governance still planned."
+    },
+    {
+      "name": "GPU networking",
+      "state": "ACTIVE",
+      "system": "fabric",
+      "description": "Synthetic congestion and collective communication models."
+    },
+    {
+      "name": "Observability",
+      "state": "BUILT WITH",
+      "system": "argus",
+      "description": "Execution traces and a supported NCCL log reader."
+    },
+    {
+      "name": "Distributed AI",
+      "state": "ACTIVE",
+      "system": "fabric",
+      "description": "Communication questions; no distributed serving deployment is claimed."
+    },
+    {
+      "name": "GPU compute",
+      "state": "ORIENTING",
+      "system": "fabric",
+      "description": "Hardware baseline protocol; measurements remain planned."
+    },
+    {
+      "name": "Linux internals",
+      "state": "ORIENTING",
+      "system": "aegis",
+      "description": "Host and transport boundaries in the research scope."
+    },
+    {
+      "name": "Systems programming",
+      "state": "ORIENTING",
+      "system": "cortex",
+      "description": "Lower-level runtime relationships, without a proficiency claim."
+    },
+    {
+      "name": "Cybersecurity",
+      "state": "ORIENTING",
+      "system": "argus",
+      "description": "Capability policy is an open architecture question."
+    },
+    {
+      "name": "Accelerator architecture",
+      "state": "ORIENTING",
+      "system": "fabric",
+      "description": "Documented DGX and topology study material."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+[
+  {
+    "id": "L-001",
+    "system": "fabric",
+    "date": "2026-09-11",
+    "title": "A better tail can hide a worse delivery outcome",
+    "question": "What happens to the latency sample when slow packets are dropped?",
+    "observation": "The reference capacity-4 case has a 4 μs delivered-packet p99 and 256 drops. Capacity 8 removes drops but has an 8 μs delivered-packet p99.",
+    "measurements": [],
+    "hypothesis": "Survivor-only latency can reward dropping traffic unless delivery is reported alongside it.",
+    "nextExperiment": "Keep both loss and all-packet completion in every comparison.",
+    "type": "synthetic",
+    "source": {
+      "label": "Source observation and limits",
+      "url": "https://github.com/rootuser39/ai-fabric-lab-/blob/543698ea954aaf5c4bcf48bd26ef351331f5da20/docs/START_HERE.md"
+    },
+    "relatedExperiments": [
+      "E-001",
+      "E-003"
+    ]
+  },
+  {
+    "id": "L-002",
+    "system": "argus",
+    "date": "2026-10-02",
+    "title": "A trace field is not a verification guarantee",
+    "question": "What does ARGUS currently mean by verified?",
+    "observation": "At the reviewed revision, the execution loop accepts non-empty provider text before writing memory.",
+    "measurements": [],
+    "hypothesis": "A visible verification flag can be overinterpreted unless its actual test is documented.",
+    "nextExperiment": "Planned: distinguish output presence from semantic verification in a future runtime milestone.",
+    "type": "source-review",
+    "source": {
+      "label": "Reviewed output check",
+      "url": "https://github.com/rootuser39/ARGUS-Autonomous-Runtime-for-Governed-User-Sovereignty/blob/8b8997ee747e7294947ae5779ede8099c193849f/argus/core/orchestrator.py"
+    },
+    "relatedExperiments": []
+  }
+]

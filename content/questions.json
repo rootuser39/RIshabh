@@ -1,0 +1,52 @@
+[
+  {
+    "id": "Q-01",
+    "system": "fabric",
+    "question": "When does average offered load stop explaining what happens at a finite queue?",
+    "basis": "The incast suite keeps offered traffic comparable while changing phase and buffering.",
+    "evidence": {
+      "label": "Incast counterfactuals",
+      "url": "https://github.com/rootuser39/ai-fabric-lab-/blob/543698ea954aaf5c4bcf48bd26ef351331f5da20/docs/START_HERE.md"
+    }
+  },
+  {
+    "id": "Q-02",
+    "system": "fabric",
+    "question": "Which latency improvements survive when lost packets and collective completion are counted?",
+    "basis": "Delivered-packet p99 excludes dropped packets; the model reports a separate completion barrier.",
+    "evidence": {
+      "label": "Metric definitions",
+      "url": "https://github.com/rootuser39/ai-fabric-lab-/blob/543698ea954aaf5c4bcf48bd26ef351331f5da20/docs/MODEL.md"
+    }
+  },
+  {
+    "id": "Q-03",
+    "system": "argus",
+    "question": "What must a runtime verify before a generated result becomes persistent memory?",
+    "basis": "ARGUS checks output presence today; semantic verification is a planned stage.",
+    "evidence": {
+      "label": "Current verification boundary",
+      "url": "https://github.com/rootuser39/ARGUS-Autonomous-Runtime-for-Governed-User-Sovereignty/blob/8b8997ee747e7294947ae5779ede8099c193849f/argus/core/orchestrator.py"
+    }
+  },
+  {
+    "id": "Q-04",
+    "system": "argus",
+    "question": "Where should capability policy sit between a plan and execution?",
+    "basis": "Permission and sandboxed execution modules are documented as planned.",
+    "evidence": {
+      "label": "Planned governance modules",
+      "url": "https://github.com/rootuser39/ARGUS-Autonomous-Runtime-for-Governed-User-Sovereignty/blob/8b8997ee747e7294947ae5779ede8099c193849f/README.md"
+    }
+  },
+  {
+    "id": "Q-05",
+    "system": "fabric",
+    "question": "When does a collective turn the fabric into part of the computer?",
+    "basis": "Collective communication imposes a temporary logical topology on physical paths.",
+    "evidence": {
+      "label": "Collectives and topology",
+      "url": "https://github.com/rootuser39/ai-fabric-lab-/blob/543698ea954aaf5c4bcf48bd26ef351331f5da20/collectives/nccl-allreduce.md"
+    }
+  }
+]

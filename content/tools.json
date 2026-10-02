@@ -1,0 +1,95 @@
+[
+  {
+    "name": "Python",
+    "category": "LANGUAGES",
+    "role": "Deterministic experiments, orchestration and reproducible content generation.",
+    "state": "BUILT WITH",
+    "systems": [
+      "argus",
+      "fabric",
+      "observatory"
+    ]
+  },
+  {
+    "name": "Pydantic",
+    "category": "SYSTEMS",
+    "role": "Make scenario, telemetry and diagnosis payload boundaries explicit.",
+    "state": "BUILT WITH",
+    "systems": [
+      "aegis"
+    ]
+  },
+  {
+    "name": "JSONL",
+    "category": "RUNTIMES",
+    "role": "Append inspectable execution records after the runtime’s output check.",
+    "state": "BUILT WITH",
+    "systems": [
+      "argus"
+    ]
+  },
+  {
+    "name": "NCCL",
+    "category": "NETWORKING",
+    "role": "Study collective traffic and interpret supported stdout tables.",
+    "state": "ACTIVE",
+    "systems": [
+      "fabric"
+    ],
+    "note": "A parser and synthetic fixture are present; no hardware NCCL run is claimed."
+  },
+  {
+    "name": "CUDA",
+    "category": "COMPUTE",
+    "role": "Execution and memory context for a future controlled GPU baseline.",
+    "state": "ORIENTING",
+    "systems": [
+      "fabric"
+    ],
+    "note": "Hardware validation is planned, not performed."
+  },
+  {
+    "name": "ROCm",
+    "category": "COMPUTE",
+    "role": "An alternative accelerator runtime to examine against the same execution questions.",
+    "state": "UNEXPLORED",
+    "systems": [],
+    "note": "Included as research scope; no implementation evidence is recorded."
+  },
+  {
+    "name": "Linux",
+    "category": "SYSTEMS",
+    "role": "The kernel and host boundary beneath transport and runtime behavior.",
+    "state": "ORIENTING",
+    "systems": [
+      "aegis",
+      "fabric"
+    ]
+  },
+  {
+    "name": "Git",
+    "category": "AUTOMATION",
+    "role": "Tie observations to source revisions and keep evidence reviewable.",
+    "state": "BUILT WITH",
+    "systems": [
+      "observatory"
+    ]
+  },
+  {
+    "name": "GitHub Actions",
+    "category": "AUTOMATION",
+    "role": "Validate content and build the static interface when relevant files change.",
+    "state": "BUILT WITH",
+    "systems": [
+      "observatory"
+    ]
+  },
+  {
+    "name": "C++",
+    "category": "LANGUAGES",
+    "role": "A lower-level execution lens from the original instrument drawer.",
+    "state": "ORIENTING",
+    "systems": [],
+    "note": "No C++ implementation is presented as evidence in this portfolio."
+  }
+]

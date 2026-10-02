@@ -32,17 +32,24 @@ def svg(name, width, height, title, body, desc=""):
  <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M 48 0 H 0 V 48" fill="none" stroke="#c6b8d9" stroke-opacity=".05" stroke-width="1"/></pattern>
 </defs>
 <style>
- .turn {{ animation: turn 42s linear infinite; }}
- .counter {{ animation: turn 64s linear infinite reverse; }}
- .slow {{ animation: turn 90s linear infinite; }}
- .signal {{ animation: flow 10s linear infinite; }}
- .breathe {{ animation: breathe 6s ease-in-out infinite; }}
- .blink {{ animation: breathe 4s ease-in-out infinite; }}
+ .turn {{ animation: turn 140s linear infinite; }}
+ .counter {{ animation: turn 210s linear infinite reverse; }}
+ .slow {{ animation: turn 280s linear infinite; }}
+ .signal {{ animation: flow 28s linear infinite; }}
+ .breathe {{ animation: breathe 20s ease-in-out infinite; }}
+ .blink {{ animation: breathe 22s ease-in-out infinite; }}
  @keyframes turn {{ to {{ transform: rotate(360deg); }} }}
  @keyframes flow {{ to {{ stroke-dashoffset: -400; }} }}
  @keyframes breathe {{ 0%,100% {{ opacity:.35; }} 50% {{ opacity:.95; }} }}
  @media (prefers-reduced-motion: reduce) {{ .turn,.counter,.slow,.signal,.breathe,.blink {{ animation:none !important; }} }}
 {dragon_css}
+ .wing-open {{ animation:rare-wing-open 18s steps(1,end) infinite; }}
+ .wing-mid {{ animation:rare-wing-mid 18s steps(1,end) infinite; }}
+ .wing-low {{ animation:rare-wing-low 18s steps(1,end) infinite; }}
+ @keyframes rare-wing-open {{ 0%,86%,100% {{ opacity:1; }} 87% {{ opacity:0; }} 98% {{ opacity:1; }} }}
+ @keyframes rare-wing-mid {{ 0%,100% {{ opacity:0; }} 87% {{ opacity:1; }} 90% {{ opacity:0; }} 95% {{ opacity:1; }} 98% {{ opacity:0; }} }}
+ @keyframes rare-wing-low {{ 0%,100% {{ opacity:0; }} 90% {{ opacity:1; }} 95% {{ opacity:0; }} }}
+ @media (prefers-reduced-motion:reduce) {{ .wing-open,.wing-mid,.wing-low {{ animation:none !important; }} }}
 </style>
 <rect width="100%" height="100%" rx="18" fill="{INK}"/>
 {body}
