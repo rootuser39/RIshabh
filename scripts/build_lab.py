@@ -13,10 +13,11 @@ import shutil
 from urllib.parse import urlparse
 
 from void_dragon import DRAGON_CSS, dragon
+import lab_graphics as graphics
 
 ROOT = Path(__file__).resolve().parents[1]
 NAMES = ('site', 'current-signal', 'systems', 'experiments', 'field-logs', 'failures',
-         'questions', 'tools', 'depth', 'transmissions', 'map', 'sources')
+         'questions', 'tools', 'depth', 'transmissions', 'map', 'sources', 'motion')
 STATES = {'UNEXPLORED', 'ORIENTING', 'ACTIVE', 'OPERATIONAL', 'BUILT WITH'}
 FAILURE_STATES = {'OPEN', 'INVESTIGATING', 'UNDERSTOOD', 'RESOLVED'}
 
@@ -83,6 +84,20 @@ def validate_content(data):
             raise ValueError(f'Missing card asset: {system["asset"]}')
         if any(item not in {f['id'] for f in data['failures']} for item in system.get('failures', [])):
             raise ValueError('Unknown system failure reference')
+    domains=data['depth']['domains']
+    domain_ids={v['id'] for v in domains}
+    if len(domain_ids)!=len(domains):raise ValueError('Duplicate depth domain')
+    for edge in data['depth']['edges']:
+        if len(edge)!=2 or any(v not in domain_ids for v in edge):raise ValueError('Unknown depth edge')
+    for layout,columns in [('mobile',2),('desktop',3)]:
+        positions=[tuple(v[layout]) for v in domains]
+        if len(set(positions))!=len(positions):raise ValueError('Overlapping depth geometry')
+        for x,y in positions:
+            if not isinstance(x,int) or not isinstance(y,int) or not 0<=x<columns or y<0:
+                raise ValueError('Invalid depth geometry')
+    tiers={v['id'] for v in data['motion']['memory']['tiers']}
+    for mode in data['motion']['memory']['modes']:
+        if any(v not in tiers for v in mode['path']):raise ValueError('Unknown memory tier')
     date.fromisoformat(data['current-signal']['updated'])
     date.fromisoformat(data['sources']['reviewed'])
     if data['site']['hosting']['enabled'] and not data['site']['hosting'].get('url'):
@@ -168,26 +183,26 @@ def empty(label, description):
 
 def render_body(data, derived):
     site, signal = data['site'], data['current-signal']
-    parts = [f'<section id="identity" aria-label="Identity"><div class="hero-art" aria-hidden="true">{picture("observatory.svg")}</div><div class="intro"><p class="eyebrow">ARCHITECT. ARTIST. SCIENTIST.</p><h1>{esc(site["statement"])}</h1><p>I’m {esc(site["name"])} {esc(site["intro"])}</p><p class="signature"><b>Architect</b> the system. <b>Study</b> the mechanism. <b>Make</b> something worth looking at.</p></div></section>']
+    parts = [f'<section id="identity" aria-label="Identity">{graphics.hero(picture("observatory.svg"))}<div class="intro"><p class="eyebrow">ARCHITECT. ARTIST. SCIENTIST.</p><h1>{esc(site["statement"])}</h1><p>I’m {esc(site["name"])} {esc(site["intro"])}</p><p class="signature"><b>Architect</b> the system. <b>Study</b> the mechanism. <b>Make</b> something worth looking at.</p></div></section>']
     signal_fields = [(label.upper(), esc(signal[key])) for key,label in [('building','Building'),('investigating','Investigating'),('breaking','Breaking'),('learning','Learning')]]
     latest = next((e for e in data['experiments'] if e['id'] == signal.get('latestExperiment')), None)
     signal_fields += [('LATEST EXPERIMENT', f'<a href="#{latest["id"]}">{esc(latest["id"])} / {esc(latest["title"])}</a><br><span class="micro">Recorded {esc(latest["date"])} · {esc(latest["type"])}</span>' if latest else 'Not yet documented.'), ('LAST SHIPPED', f'<a href="{esc(signal["lastShipped"]["url"])}">{esc(signal["lastShipped"]["title"])}</a><br><span class="micro">{esc(signal["lastShipped"]["date"])}</span>')]
     signal_card = f'<div class="surface"><div class="signal-top"><span class="eyebrow">CURRENT SIGNAL / {esc(signal["updated"])}</span><span class="status">{esc(signal["status"])}</span></div>{fields(signal_fields)}<p class="signal-note">{esc(signal["mode"])}. “Updated” is the content edit date, not a hardware or activity heartbeat.</p></div>'
-    pet = f'<aside class="surface pet-panel" aria-label="Void Dragon interface companion"><div class="pet-header"><p class="eyebrow">VOID DRAGON / 01</p><p class="pet-state" id="pet-state">IDLE</p></div><div class="pet-stage"><svg class="pet" data-state="idle" viewBox="0 0 76 63" aria-hidden="true" focusable="false">{dragon(8,4,1)}</svg></div><p class="signal-note">Curiosity, with a pulse. The companion reacts to records being opened.</p><div class="pet-controls enhancement"><button type="button" id="pet-observe">Observe</button><button type="button" id="motion-toggle" aria-pressed="false">Pause motion</button></div></aside>'
+    pet = f'<aside class="surface pet-panel" aria-label="Void Dragon interface companion"><div class="pet-header"><p class="eyebrow">VOID DRAGON / 01</p><p class="pet-state" id="pet-state">IDLE</p></div><div class="dragon-perch home-perch" data-perch="home"><div class="pet-stage"><button type="button" class="resident-touch enhancement" aria-label="Observe the Void Dragon"></button><svg class="pet" data-state="idle" viewBox="0 0 76 63" aria-hidden="true" focusable="false">{dragon(8,4,1)}</svg></div></div><p class="signal-note">Curiosity, with a pulse. The companion reacts to records being opened.</p><div class="pet-controls enhancement"><button type="button" id="pet-observe">Observe</button><button type="button" id="motion-toggle" aria-pressed="false">Pause motion</button></div></aside>'
     counts = [('systems','SYSTEMS'),('experiments','EXPERIMENTS'),('fieldLogs','FIELD LOGS'),('failures','FAILURES'),('transmissions','TRANSMISSIONS')]
-    telemetry = '<dl class="telemetry" aria-label="Content-derived record counts">' + ''.join(f'<div><dt>{label}</dt><dd>{derived["counts"][key]}</dd></div>' for key,label in counts) + '</dl><p class="telemetry-note">CONTENT TELEMETRY / counts from these records · source review ' + esc(data['sources']['reviewed']) + ' · no realtime monitoring.</p>'
+    telemetry = '<dl class="telemetry" aria-label="Content-derived record counts">' + ''.join(f'<div><dt>{label}</dt><dd>{derived["counts"][key]}</dd>{graphics.telemetry(derived["counts"][key])}</div>' for key,label in counts) + '</dl><p class="telemetry-note">CONTENT TELEMETRY / counts from these records · source review ' + esc(data['sources']['reviewed']) + ' · no realtime monitoring.</p>'
     parts.append(section('signal','01','WORKING RECORD','Current signal','A small, maintained window into the work. Evidence and intent remain separate.',f'<div class="signal-layout">{signal_card}{pet}</div>{telemetry}'))
     panels=[]
     for system in data['systems']:
-        art = picture(system['asset'], card=True) if system.get('asset') else f'<h3>{esc(system["name"])}</h3>'
-        path = '<ol class="path">' + ''.join(f'<li>{esc(stage)}</li>' for stage in system['architecture']) + '</ol>'
+        art = graphics.card(system['asset'],system['id'],picture(system['asset'], card=True)) if system.get('asset') else f'<h3>{esc(system["name"])}</h3>'
+        path = graphics.flow(system)
         body = f'<h3>{esc(system["name"])}</h3><p>{esc(system["thesis"])}</p>' + fields([('QUESTION',esc(system['question'])),('WHY IT EXISTS',esc(system['why'])),('ARCHITECTURE',path),('CURRENT STATE',esc(system['state'])),('BUILT',listing(system['built'])),('CURRENTLY INVESTIGATING',esc(system['investigating'])),('NEXT EXPERIMENT',esc(system['nextExperiment'])),('FAILURE RECORDS', ' · '.join(f'<a href="#{esc(i)}">{esc(i)}</a>' for i in system.get('failures',[])) or 'No linked failures documented.')])
         body += links(system['evidence']) + f'<p class="boundary">{esc(system["boundary"])}</p>'
         panels.append(f'<details id="system-{system["id"]}" class="system" data-system="{system["id"]}"><summary><span class="sr-only">Inspect {esc(system["name"])}</span>{art}<span class="system-caption">{esc(system["state"])} / INSPECT</span></summary><div class="system-body">{body}</div></details>')
     relationships = ''.join(f'<article class="relationship"><p class="micro">{esc(r["kind"])}</p><h4>{esc(system_name(data,r["from"]))} ↔ {esc(system_name(data,r["to"]))}</h4><p>{esc(r["description"])}</p>{link(r["source"]) if r.get("source") else ""}</article>' for r in data['map']['relationships'])
     layers=''.join(f'<div class="layer"><span class="layer-index" aria-hidden="true">{i:02d}</span><div class="layer-content"><div class="layer-title"><span class="layer-label">{esc(layer["name"])}</span><button class="enhancement" type="button" data-layer="{esc(layer["id"])}" aria-pressed="false">{esc(layer["name"])}</button>{chips(data,layer["systems"])}</div><p>{esc(layer["question"])}</p></div></div>' for i,layer in enumerate(data['map']['layers'],1))
     map_html=f'<div class="surface map"><header class="map-head"><p class="eyebrow">RELATIONSHIPS / THE LAYERS BENEATH</p><h3>Follow the execution path.</h3><p>{esc(data["map"]["boundary"])}</p></header><div class="relationship-grid">{relationships}</div><div class="layers">{layers}</div><p id="layer-note" class="layer-note" aria-live="polite">{esc(data["map"]["boundary"])}</p></div>'
-    parts.append(section('systems','02','SYSTEMS IN ORBIT','Inspectable systems','Open a panel to inspect the question, the implementation and the unresolved boundary.', '<div class="system-grid">'+''.join(panels)+'</div>'+map_html))
+    parts.append(section('systems','02','SYSTEMS IN ORBIT','Inspectable systems','Open a panel to inspect the question, the implementation and the unresolved boundary.', '<div class="system-grid">'+''.join(panels)+'</div>'+map_html+graphics.runtime(data)+graphics.memory(data['motion']['memory'])+graphics.fabric(data['motion']['fabric'])))
     evidence_systems=list(dict.fromkeys(item['system'] for name in ('experiments','field-logs','failures') for item in data[name]))
     choices=[('all','All records')]+[(identifier,system_name(data,identifier)) for identifier in evidence_systems]
     filters='<div class="filters" role="group" aria-label="Filter evidence by system">'+''.join(f'<button type="button" data-filter-group="evidence" data-filter="{identifier}" aria-pressed="{str(identifier=="all").lower()}">{label}</button>' for identifier,label in choices)+'</div><p id="evidence-count" class="sr-only" aria-live="polite"></p>'
@@ -196,9 +211,9 @@ def render_body(data, derived):
         rendered=[]
         for item in data[key]:
             if key == 'failures':
-                body=fields([(label,esc(item[field_name])) for label,field_name in [('SYMPTOM','symptom'),('INITIAL HYPOTHESIS','initialHypothesis'),('ROOT CAUSE','rootCause'),('FIX','fix'),('LESSON','lesson'),('STATUS','status')]])+links(item['evidence'])
+                body=graphics.failure(item)+fields([(label,esc(item[field_name])) for label,field_name in [('SYMPTOM','symptom'),('INITIAL HYPOTHESIS','initialHypothesis'),('ROOT CAUSE','rootCause'),('FIX','fix'),('LESSON','lesson'),('STATUS','status')]])+links(item['evidence'])
             else:
-                body=fields([('QUESTION',esc(item['question'])),('OBSERVED',esc(item['observation'])),('HYPOTHESIS',esc(item['hypothesis'])),('NEXT EXPERIMENT',esc(item['nextExperiment']))])+metrics(item.get('measurements',[]))
+                body=graphics.plot(item,data)+fields([('QUESTION',esc(item['question'])),('OBSERVED',esc(item['observation'])),('HYPOTHESIS',esc(item['hypothesis'])),('NEXT EXPERIMENT',esc(item['nextExperiment']))])+metrics(item.get('measurements',[]))
                 if item.get('command'):body+=f'<code class="command">{esc(item["command"])}</code>'
                 body+=links([item['source']])
                 if item.get('limits'):body+=f'<p class="boundary">{esc(item["limits"])}</p>'
@@ -209,7 +224,7 @@ def render_body(data, derived):
     principles='<div class="principles">'+''.join(f'<article class="principle"><h3>{esc(item["name"])}</h3><p>{esc(item["question"])}</p></article>' for item in site['principles'])+'</div>'
     questions='<div class="question-grid">'+''.join(f'<article class="question"><p class="eyebrow">QUESTION / {esc(item["id"])}</p><h3>{esc(item["question"])}</h3><details><summary>Inspect the basis</summary><p>{esc(item["basis"])}</p>{links([item["evidence"]])}</details></article>' for item in data['questions'])+'</div>'
     legend='<div class="depth-legend">'+''.join(f'<div><span class="glyph" aria-hidden="true">{esc(item["symbol"])}</span><span><b>{esc(item["state"])}</b> / {esc(item["meaning"])}</span></div>' for item in data['depth']['legend'])+'</div>'
-    depth='<div class="depth-grid">'+''.join(f'<article class="domain"><h4>{esc(item["name"])}</h4><span class="micro">{esc(item["state"])}</span><p>{esc(item["description"])}</p></article>' for item in data['depth']['domains'])+'</div>'
+    depth=graphics.depth(data['depth'])
     parts.append(section('questions','04','OPERATING MODEL','Questions I am chasing','Interests become useful when they turn into questions that can survive an experiment.',principles+questions+f'<section class="subsection" aria-labelledby="depth-title"><h3 id="depth-title">Depth map</h3><p>Activity and evidence, never skill percentages. “Built with” describes artifacts, not mastery.</p>{legend}{depth}</section>'))
     categories=list(dict.fromkeys(item['category'] for item in data['tools']))
     tool_filters='<div class="filters" role="group" aria-label="Filter instruments by role">'+''.join(f'<button type="button" data-filter-group="tools" data-filter="{esc(category)}" aria-pressed="{str(category=="all").lower()}">{esc(category.title())}</button>' for category in ['all']+categories)+'</div><p id="tools-count" class="sr-only" aria-live="polite"></p>'
@@ -219,7 +234,7 @@ def render_body(data, derived):
     parts.append(section('transmissions','06','TRANSMISSIONS','Notes from the machinery.','Existing technical notes, connected to the work that gives them context. No invented publication history.','<div class="transmission-grid">'+transmissions+'</div>' if transmissions else empty('NO TRANSMISSIONS YET','Writing will appear here when it is ready to be inspected.')))
     channel=site['channel']
     channel_body=f'<div class="channel-grid"><div><h3>GOOD REASONS TO OPEN A CHANNEL</h3>{listing(channel["reasons"])}</div><div><h3>A USEFUL FIRST MESSAGE</h3>{listing(channel["protocol"])}</div></div><a class="channel-cta" href="{esc(channel["url"])}">Explore the repositories <span aria-hidden="true">↗</span></a>'
-    parts.append(section('channel','07','INTERSECTIONS','Open channel',channel['intro'],channel_body))
+    parts.append(section('channel','07','INTERSECTIONS','Open channel',channel['intro'],channel_body+graphics.perch('channel')))
     parts.append(f'<footer class="closing"><div class="closing-art" aria-hidden="true">{picture("void-footer.svg",closing=True)}</div><div class="closing-meta"><span>FIELD RECORD / 039<br>CURIOSITY HAS TEETH.</span><a href="https://github.com/rootuser39/RIshabh">Source and research records ↗</a><button class="enhancement" type="button" id="terminal-open">Open Abyss terminal</button></div></footer>')
     return ''.join(parts)
 
@@ -258,6 +273,7 @@ def render_readme(data, derived):
     parts.append('### System map\n\n'+data['map']['boundary'])
     parts += [f'**{system_name(data,r["from"])} ↔ {system_name(data,r["to"])} / {r["kind"]}**  \n{r["description"]}' for r in data['map']['relationships']]
     parts.append('<details>\n<summary><b>Follow the layers beneath the model</b></summary>\n\n'+'\n\n'.join(f'**{layer["name"]}** — {layer["question"]}  \n'+(' · '.join(system_name(data,i) for i in layer['systems']) or 'No implemented system mapped.') for layer in data['map']['layers'])+'\n\n</details>')
+    parts.append('### Watch the paths\n\nThree source-backed or explicitly conceptual illustrations. The interactive interface adds controllable playback; GitHub displays self-contained diagrams.\n\n<p align="center">\n'+mdpicture('lab-execution.svg','ARGUS source output contract','400')+'\n'+mdpicture('lab-fabric.svg','Conceptual convergence into a shared receiver','400')+'\n'+mdpicture('lab-memory.svg','Conceptual model-loading memory path','400')+'\n</p>\n\n[Motion architecture and boundaries](docs/MOTION.md)')
     parts.append('<sub>03 / EVIDENCE</sub>\n\n## Evidence\n\nResults remain attached to a source and an evidence boundary. The congestion results below are synthetic model outputs, not GPU or NIC benchmarks.')
     for key,heading,kind in [('experiments','Experiments','EXPERIMENT'),('field-logs','Field log','FIELD LOG'),('failures','Failure archive','FAILURE')]:
         parts.append('### '+heading)
@@ -288,14 +304,16 @@ def render_readme(data, derived):
 
 def outputs(data):
     derived={'updated':data['current-signal']['updated'],'sourceReviewed':data['sources']['reviewed'], 'basis':'Content-derived counts, not live activity', 'counts':{key:len(data[name]) for key,name in [('systems','systems'),('experiments','experiments'),('fieldLogs','field-logs'),('failures','failures'),('transmissions','transmissions')]}}
-    css=(ROOT/'interface/styles.css').read_text().replace('@@DRAGON_CSS@@',DRAGON_CSS)
-    js=(ROOT/'interface/lab.js').read_text()
+    graphics.RULES.clear()
+    body=render_body(data,derived)
+    css=graphics.artwork_css()+'\n'+(ROOT/'interface/styles.css').read_text().replace('@@DRAGON_CSS@@',DRAGON_CSS)+'\n'+(ROOT/'interface/machinery.css').read_text()+'\n'+graphics.geometry_css(data['depth'])
+    js=(ROOT/'interface/motion.js').read_text()+'\n'+(ROOT/'interface/lab.js').read_text()
     digest=lambda value:base64.b64encode(sha256(value.encode()).digest()).decode()
     csp=f"default-src 'none'; img-src 'self' data:; style-src 'sha256-{digest(css)}'; script-src 'sha256-{digest(js)}'; connect-src 'none'; base-uri 'none'; form-action 'none'"
     encoded=json.dumps({**data,'derived':derived},ensure_ascii=False,separators=(',',':')).replace('<','\\u003c')
     html=(ROOT/'interface/template.html').read_text()
-    for placeholder,value in [('CSP',csp),('CSS',css),('BODY',render_body(data,derived)),('DATA',encoded),('JS',js)]:html=html.replace('@@'+placeholder+'@@',value)
-    return {'README.md':render_readme(data,derived),'index.html':html,'content/derived.json':json.dumps(derived,indent=2)+'\n', 'assets/omega.svg':'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#090810"/><text x="32" y="45" text-anchor="middle" font-family="serif" font-size="43" fill="#bdacff">Ω</text></svg>\n'}
+    for placeholder,value in [('CSP',csp),('CSS',css),('BODY',body),('RAIL',graphics.rail(data['motion'])),('DATA',encoded),('JS',js)]:html=html.replace('@@'+placeholder+'@@',value)
+    return {**graphics.readme_graphics(),'README.md':render_readme(data,derived),'index.html':html,'content/derived.json':json.dumps(derived,indent=2)+'\n', 'assets/omega.svg':'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#090810"/><text x="32" y="45" text-anchor="middle" font-family="serif" font-size="43" fill="#bdacff">Ω</text></svg>\n'}
 
 
 def main():

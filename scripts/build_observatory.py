@@ -32,9 +32,9 @@ def svg(name, width, height, title, body, desc=""):
  <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M 48 0 H 0 V 48" fill="none" stroke="#c6b8d9" stroke-opacity=".05" stroke-width="1"/></pattern>
 </defs>
 <style>
- .turn {{ animation: turn 140s linear infinite; }}
- .counter {{ animation: turn 210s linear infinite reverse; }}
- .slow {{ animation: turn 280s linear infinite; }}
+ .turn {{ animation: turn 48s linear infinite; }}
+ .counter {{ animation: turn 60s linear infinite reverse; }}
+ .slow {{ animation: turn 58s linear infinite; }}
  .signal {{ animation: flow 28s linear infinite; }}
  .breathe {{ animation: breathe 20s ease-in-out infinite; }}
  .blink {{ animation: breathe 22s ease-in-out infinite; }}
@@ -154,22 +154,22 @@ def project_cards():
     cortex = '<g transform="translate(0 -9)">'
     for i in range(5):
         y=i*20-30
-        cortex += f'<path d="M -60 {y} L 0 {y-26} L 60 {y} L 0 {y+26} Z" fill="{INK}" stroke="{ACCENT if i==0 else "#8c809c"}" stroke-width="1.3"/>'
+        cortex += f'<path class="cortex-layer layer-{i}" d="M -60 {y} L 0 {y-26} L 60 {y} L 0 {y+26} Z" fill="{INK}" stroke="{ACCENT if i==0 else "#8c809c"}" stroke-width="1.3"/>'
     cortex += '</g><path d="M 0 -76 V 83" fill="none" stroke="#bdacff" stroke-width="2" stroke-dasharray="4 16" class="signal"/>'
     card("cortex.svg","01","CORTEX Ω","Intelligence, from intent to compute.","AGENTS / INFERENCE / RUNTIMES",cortex)
     argus='<path d="M 0 -69 L 58 -46 V -4 C 58 33 30 58 0 76 C -30 58 -58 33 -58 -4 V -46 Z" fill="none" stroke="#8f809f" stroke-width="1.2"/>'
-    argus+='<path d="M -43 0 Q 0 -46 43 0 Q 0 46 -43 0 Z" fill="none" stroke="#d5cbe5" stroke-width="1.3"/><circle r="15" fill="none" stroke="#bdacff"/><circle r="5" fill="#bdacff" class="breathe"/><path d="M -57 47 H 57" stroke="#bdacff" stroke-dasharray="6 9" class="signal"/>'
+    argus+='<path class="argus-eye" d="M -43 0 Q 0 -46 43 0 Q 0 46 -43 0 Z" fill="none" stroke="#d5cbe5" stroke-width="1.3"/><circle r="15" fill="none" stroke="#bdacff"/><circle r="5" fill="#bdacff" class="argus-pupil"/><path class="argus-scan" d="M -57 47 H 57" stroke="#bdacff" stroke-dasharray="6 9" class="signal"/>'
     card("argus.svg","02","ARGUS","Intent. Permission. Execution.","PLANNING / ROUTING / MEMORY",argus)
     fabric=''
     for x in [-54,0,54]:
         for x2 in [-54,0,54]:
             fabric+=f'<path d="M {x} -45 L {x2} 45" stroke="#6d5f80" stroke-width=".85" fill="none"/>'
-    fabric+='<path d="M -54 -45 L 54 45 M 54 -45 L -54 45" stroke="#bdacff" stroke-width="2" fill="none" stroke-dasharray="5 30" class="signal"/>'
+    fabric+='<path d="M -54 -45 L 54 45 M 54 -45 L -54 45" data-route="true" stroke="#bdacff" stroke-width="2" fill="none" stroke-dasharray="5 30" class="signal"/>'
     for y in [-45,45]:
         for x in [-54,0,54]:
             fabric+=f'<rect x="{x-10}" y="{y-10}" width="20" height="20" rx="4" fill="{INK}" stroke="#c3b3d5"/>'
     card("fabric.svg","03","AI FABRIC LAB","The conversation between GPUs.","CONGESTION / COLLECTIVES / TELEMETRY",fabric)
-    aegis='<circle r="65" fill="none" stroke="#342b46"/><circle r="42" fill="none" stroke="#625773" stroke-dasharray="3 6"/><g class="turn"><path d="M 0 0 L 0 -65 A 65 65 0 0 1 56 -32 Z" fill="#bdacff" opacity=".10"/><path d="M 0 0 L 0 -65" stroke="#bdacff" stroke-width="1.5"/></g><path d="M -74 8 H -41 L -29 -16 L -11 31 L 5 -5 H 30 L 38 -27 L 52 8 H 74" fill="none" stroke="#e4dcf3" stroke-width="1.8"/><circle cx="38" cy="-27" r="4" fill="#bdacff" class="breathe"/>'
+    aegis='<circle r="65" fill="none" stroke="#342b46"/><circle r="42" fill="none" stroke="#625773" stroke-dasharray="3 6"/><g class="turn"><path d="M 0 0 L 0 -65 A 65 65 0 0 1 56 -32 Z" fill="#bdacff" opacity=".10"/><path d="M 0 0 L 0 -65" stroke="#bdacff" stroke-width="1.5"/></g><path class="aegis-wave" pathLength="1" d="M -74 8 H -41 L -29 -16 L -11 31 L 5 -5 H 30 L 38 -27 L 52 8 H 74" fill="none" stroke="#e4dcf3" stroke-width="1.8"/><circle cx="38" cy="-27" r="4" fill="#bdacff" class="aegis-anomaly"/>'
     card("aegisnet.svg","04","AEGISNET","Break. Observe. Diagnose.","NETWORKS / FAILURE / AUTOMATION",aegis,stage="EARLY SCAFFOLD")
 
 

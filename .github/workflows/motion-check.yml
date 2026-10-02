@@ -1,0 +1,59 @@
+name: Verify graphical laboratory
+on:
+  push:
+    branches: [main, lab-motion-039]
+    paths: ['content/**', 'interface/**', 'scripts/**', 'assets/**', 'tests/**', 'docs/**', 'README.md', 'index.html', '.github/workflows/motion-check.yml']
+  pull_request:
+    paths: ['content/**', 'interface/**', 'scripts/**', 'assets/**', 'tests/**', 'index.html', '.github/workflows/motion-check.yml']
+permissions:
+  contents: read
+concurrency:
+  group: motion-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Build and validate
+        run: |
+          python scripts/build_observatory.py
+          python scripts/build_lab.py
+          python scripts/build_lab.py --check
+          python -m unittest discover -s tests -p 'test_*.py' -v
+          node --check interface/lab.js
+          node --check interface/motion.js
+      - name: Require generated-file consistency on main
+        if: github.ref == 'refs/heads/main'
+        run: git diff --exit-code -- assets README.md index.html content/derived.json
+      - name: Install browser verification tooling
+        run: |
+          npm install --prefix /tmp/lab-browser --no-audit --no-fund playwright@1.56.1
+          /tmp/lab-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Verify concepts, layouts and motion lifecycle
+        env:
+          CODEX_PRIMARY_RUNTIME_NODE_MODULES: /tmp/lab-browser/node_modules
+        run: node tests/browser.cjs
+      - name: Preserve review screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: motion-review
+          path: test-results
+          retention-days: 7
+      - name: Export generated views for the isolated implementation branch
+        if: success() && github.ref == 'refs/heads/lab-motion-039'
+        run: |
+          python - <<'PY'
+          import base64, json
+          from pathlib import Path
+          paths=[Path('README.md'),Path('index.html'),Path('content/derived.json'),*Path('assets').rglob('*.svg')]
+          for path in paths:
+              value=base64.b64encode(path.read_bytes()).decode()
+              for number,start in enumerate(range(0,len(value),16000)):
+                  print('GENERATED:'+json.dumps({'path':str(path),'part':number,'data':value[start:start+16000]}))
+          PY

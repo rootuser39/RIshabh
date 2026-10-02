@@ -37,3 +37,7 @@ No runtime dependencies, remote fonts, WebGL, polling, analytics, or scroll-driv
 
 ### Build and automation
 python scripts/build_lab.py validates JSON and renders README.md, index.html, content/derived.json and the Ω favicon. --check detects stale outputs. A path-filtered Actions workflow runs validation and packages the static site; deployment only runs if Pages is already enabled. No scheduled runs or external activity collection. GitHub Pages currently requires one-time repository settings enablement; this connector cannot change Pages settings.
+
+## Graphical extension
+
+See [MOTION.md](MOTION.md) for inspection, component/data hierarchy, responsive geometry, motion ownership and evidence limits. Controllable inline SVGs reuse the existing art. Source-backed ARGUS paths, conceptual fabric/memory instruments, factual field plots, a connected depth map and one safely perched resident share a visibility-aware controller. The README remains the GitHub view; the HTML is the full interactive view.

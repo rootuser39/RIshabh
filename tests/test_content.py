@@ -70,6 +70,27 @@ class ContentTests(unittest.TestCase):
         metric={'label':'Job completion','value':None,'unit':'µs'}
         self.assertIn('Not completed',build_lab.metrics([metric]))
 
+    def test_graph_references_and_geometry_are_validated(self):
+        data=build_lab.load_content()
+        data['depth']['edges'].append(['distributed','missing'])
+        with self.assertRaises(ValueError):build_lab.validate_content(data)
+        data=build_lab.load_content()
+        data['depth']['domains'][1]['mobile']=data['depth']['domains'][0]['mobile']
+        with self.assertRaises(ValueError):build_lab.validate_content(data)
+        data=build_lab.load_content()
+        data['motion']['memory']['modes'][0]['path'].append('invented-tier')
+        with self.assertRaises(ValueError):build_lab.validate_content(data)
+
+    def test_field_plots_follow_records_and_keep_loss(self):
+        data=build_lab.load_content()
+        rendered=build_lab.outputs(data)['index.html']
+        self.assertIn('256 / 512',rendered)
+        self.assertIn('4 μs',rendered)
+        target=next(v for v in data['experiments'] if v['id']=='E-001')
+        next(v for v in target['measurements'] if v['label']=='Delivered-packet p99')['value']=7
+        rendered=build_lab.outputs(data)['index.html']
+        self.assertIn('7 μs',rendered)
+
     def test_generated_files_match_source(self):
         for name,value in build_lab.outputs(build_lab.load_content()).items():
             with self.subTest(name=name):

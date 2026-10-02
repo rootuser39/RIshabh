@@ -21,9 +21,11 @@
       <button class="omega-trigger enhancement" type="button" aria-label="Omega. Five activations open the Abyss terminal." title="A quiet extra channel">Ω</button>
     </div>
   </header>
+  @@RAIL@@
   <main id="main" class="shell" tabindex="-1">@@BODY@@</main>
   <dialog id="abyss-terminal" class="terminal" aria-labelledby="terminal-title">
     <header><div><p class="eyebrow">EXTRA CHANNEL / Ω</p><h2 id="terminal-title">Abyss terminal</h2></div><button type="button" id="terminal-close" aria-label="Close Abyss terminal">×</button></header>
+    <div class="terminal-resident"><span class="micro">RESIDENT / Ω</span><div class="dragon-perch" data-perch="terminal" aria-hidden="true"></div></div>
     <pre id="terminal-output" role="log" aria-live="polite" aria-relevant="additions text">FIELD RECORD / 039
 Read-only observatory terminal. Type help.</pre>
     <form id="terminal-form"><label for="terminal-command" class="sr-only">Terminal command</label><span aria-hidden="true">&gt;</span><input id="terminal-command" type="text" maxlength="80" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="help"><button type="submit">Send</button></form>

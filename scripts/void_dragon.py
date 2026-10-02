@@ -26,7 +26,7 @@ DRAGON_CSS = """
  .wing-low { opacity:0; animation: wing-low 1.8s steps(1,end) infinite; }
  .dragon-eye { animation: dragon-blink 7.2s steps(1,end) infinite; }
  .void-breath { opacity:0; animation: void-breath 10.8s ease-out infinite; }
- .void-spark { animation: void-spark 5s ease-in-out infinite; }
+ .void-spark { animation: quiet-spark 37s steps(1,end) infinite; }
  .void-star { animation: void-star 7s ease-in-out infinite; }
  .void-orbit { animation: void-orbit 34s linear infinite; }
  @keyframes dragon-hover { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-1.5px); } }
@@ -37,6 +37,7 @@ DRAGON_CSS = """
  @keyframes dragon-blink { 0%,92%,97%,100% { opacity:1; } 94%,99% { opacity:0; } }
  @keyframes void-breath { 0%,58%,100% { opacity:0; transform:translate(0,0); } 61% { opacity:.85; } 76% { opacity:0; transform:translate(-13px,-3px); } }
  @keyframes void-spark { 0%,100% { opacity:.15; transform:translateY(0); } 50% { opacity:.75; transform:translateY(-10px); } }
+ @keyframes quiet-spark { 0%,94%,100% { opacity:.15; } 96% { opacity:.45; } }
  @keyframes void-star { 0%,100% { opacity:.2; } 50% { opacity:.8; } }
  @keyframes void-orbit { to { transform:rotate(360deg); } }
  @media (prefers-reduced-motion:reduce) {
@@ -159,7 +160,14 @@ def body():
     # A tucked foreclaw beneath the neck.
     paint(grid, [(23,35),(27,36),(26,39),(22,39),(20,37),(22,36)], "deep", True)
     paint(grid, [(20,37),(22,37),(22,39),(20,39)], "silver")
-    return tiles(grid)
+    head={(x,y):color for (x,y),color in grid.items() if y<34 and x<29}
+    ear={(x,y):color for (x,y),color in head.items() if y<24}
+    head={point:color for point,color in head.items() if point not in ear}
+    feet={(x,y):color for (x,y),color in grid.items() if y>=47}
+    front={point:color for point,color in feet.items() if point[0]<31}
+    rear={point:color for point,color in feet.items() if point[0]>=31}
+    base={point:color for point,color in grid.items() if point not in head and point not in ear and point not in feet}
+    return tiles(base)+'<g class="dragon-head">'+tiles(head)+'</g><g class="dragon-ear">'+tiles(ear)+'</g><g class="dragon-foot-front">'+tiles(front)+'</g><g class="dragon-foot-rear">'+tiles(rear)+'</g>'
 
 
 def dragon(x, y, scale=4, label="Void Dragon"):
@@ -171,7 +179,7 @@ def dragon(x, y, scale=4, label="Void Dragon"):
     result.append(f'<g class="dragon-tail">{tail()}</g>')
     for pose in ("open","mid","low"):
         result.append(f'<g class="wing-{pose}">{wing(pose)}</g>')
-    result.extend((body(), eye, f'<g class="void-breath">{breath}</g>', '</g></g>'))
+    result.extend((body(), eye, f'<g class="void-breath">{breath}</g>', '<g class="dragon-smoke" opacity="0"><rect x="9" y="12" width="2" height="2" fill="#aaa3b9"/><rect x="12" y="8" width="3" height="2" fill="#80778f"/></g>', '</g></g>'))
     return ''.join(result)
 
 

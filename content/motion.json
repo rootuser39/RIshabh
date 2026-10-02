@@ -1,0 +1,142 @@
+{
+  "rail": [
+    [
+      "INTENT",
+      "identity"
+    ],
+    [
+      "AGENT",
+      "signal"
+    ],
+    [
+      "RUNTIME",
+      "systems"
+    ],
+    [
+      "MODEL",
+      "runtime-playback"
+    ],
+    [
+      "GPU",
+      "memory-geography"
+    ],
+    [
+      "FABRIC",
+      "fabric-console"
+    ],
+    [
+      "KERNEL",
+      "failures-title"
+    ],
+    [
+      "SILICON",
+      "bench"
+    ]
+  ],
+  "fabric": {
+    "boundary": "Conceptual communication paths. Illustrative topology, queue cells and timing; independent of the recorded FIFO model. No GPU or NIC measurement.",
+    "modes": [
+      {
+        "id": "normal",
+        "name": "Normal",
+        "note": "Independent flows use separate paths."
+      },
+      {
+        "id": "incast",
+        "name": "Incast",
+        "note": "Three senders converge on one receiver. Arrival synchronization becomes visible."
+      },
+      {
+        "id": "congestion",
+        "name": "Congestion",
+        "note": "A shared receiver queue fills; the next illustrative arrival cannot be accepted."
+      },
+      {
+        "id": "adaptive",
+        "name": "Alternate path",
+        "note": "Traffic uses another link. A different path cannot remove a shared receiver bottleneck."
+      },
+      {
+        "id": "collective",
+        "name": "Collective",
+        "note": "Scatter → local work → reduce → synchronize. A conceptual sequence, not an NCCL algorithm or benchmark."
+      }
+    ]
+  },
+  "memory": {
+    "boundary": "Conceptual memory geography. Proximity and transfer boundaries, without latency values or a universal hardware ordering.",
+    "tiers": [
+      {
+        "id": "registers",
+        "name": "Registers",
+        "role": "Thread-local operands",
+        "zone": "GPU / CLOSE"
+      },
+      {
+        "id": "cache",
+        "name": "Cache",
+        "role": "Reuse near execution",
+        "zone": "GPU / CLOSE"
+      },
+      {
+        "id": "vram",
+        "name": "VRAM",
+        "role": "Device-resident model and activations",
+        "zone": "GPU / RESIDENT"
+      },
+      {
+        "id": "interconnect",
+        "name": "Interconnect",
+        "role": "Cross a device boundary",
+        "zone": "TRANSFER"
+      },
+      {
+        "id": "ram",
+        "name": "System RAM",
+        "role": "Host-resident data",
+        "zone": "HOST"
+      },
+      {
+        "id": "storage",
+        "name": "Storage",
+        "role": "Persisted model artifact",
+        "zone": "PERSISTENT"
+      }
+    ],
+    "modes": [
+      {
+        "id": "load",
+        "name": "Load model",
+        "path": [
+          "storage",
+          "ram",
+          "interconnect",
+          "vram"
+        ],
+        "note": "A persisted model is staged through host memory and transferred to device memory."
+      },
+      {
+        "id": "local",
+        "name": "Local work",
+        "path": [
+          "vram",
+          "cache",
+          "registers"
+        ],
+        "note": "An illustrative operand path approaches execution. Real cache behavior depends on the workload."
+      },
+      {
+        "id": "host",
+        "name": "Host transfer",
+        "path": [
+          "vram",
+          "interconnect",
+          "ram",
+          "interconnect",
+          "vram"
+        ],
+        "note": "Crossing a device boundary creates data movement. This diagram assigns no latency."
+      }
+    ]
+  }
+}

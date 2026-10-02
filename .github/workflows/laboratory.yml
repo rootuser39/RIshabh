@@ -31,6 +31,7 @@ jobs:
           python scripts/build_lab.py --check
           python -m unittest discover -s tests -p 'test_*.py' -v
           node --check interface/lab.js
+          node --check interface/motion.js
           git diff --exit-code -- assets README.md index.html content/derived.json
       - name: Package the static laboratory
         run: python scripts/build_lab.py --package _site

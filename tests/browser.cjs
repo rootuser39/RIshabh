@@ -32,7 +32,7 @@ let server;
   page.on('console',msg=>{if(msg.type()==='error')errors.push(msg.text());});
   page.on('request',r=>requests.push(r.url()));
   const layouts=[];
-  for(const width of [360,390,430,768,1280]) {
+  for(const width of [360,390,430,768,1280,1440]) {
     await page.setViewportSize({width,height:900});
     await page.goto('http://127.0.0.1:8087/');
     await page.waitForFunction(()=>document.documentElement.classList.contains('enhanced'));
@@ -98,27 +98,126 @@ let server;
   await page.keyboard.press('Escape');
   assert.equal(await page.locator(':focus').getAttribute('class'),'omega-trigger enhancement','Dialog restores keyboard focus');
 
+
+  const runtime=page.locator('#runtime');
+  await runtime.locator('[data-output="empty"]').click();
+  await runtime.locator('.play-trace').click();
+  assert.equal(await runtime.locator('[data-memory]').getAttribute('class'),'skipped','Empty output skips memory');
+  assert.equal(await runtime.locator('path.bypass').count(),1,'Empty output has a return route');
+  assert((await runtime.locator('.trace-status').innerText()).includes('verified: false'),'Empty result returns an unverified trace');
+  await runtime.locator('[data-output="present"]').click();
+  assert(!(await runtime.locator('[data-memory]').getAttribute('class')).includes('skipped'),'Non-empty output selects the conditional write');
+  const fabric=page.locator('#fabric-console');
+  for(const mode of content('motion').fabric.modes) {
+    await fabric.locator('[data-mode="'+mode.id+'"]').click();
+    await fabric.locator('.play-trace').click();
+    assert.equal(await fabric.locator('[data-mode="'+mode.id+'"]').getAttribute('aria-pressed'),'true','Fabric mode is touch accessible');
+    assert.equal(await fabric.locator('.packet').count(),0,'Reduced motion uses selected paths');
+    if(mode.id==='congestion')assert.equal(await fabric.locator('.queue-cell.filled').count(),5,'Congestion shows a full illustrative queue');
+    if(mode.id==='adaptive')assert((await fabric.locator('.mode-note').innerText()).includes('shared receiver bottleneck'),'Alternate path retains bottleneck limitation');
+  }
+  const memory=page.locator('#memory-geography');
+  for(const mode of content('motion').memory.modes) {
+    await memory.locator('[data-mode="'+mode.id+'"]').click();
+    await memory.locator('.play-trace').click();
+    assert.equal(await memory.locator('[data-tier].selected').count(),new Set(mode.path).size,'Memory mode selects actual content path');
+  }
+  const domain=page.locator('[data-domain="distributed"]');
+  await domain.focus();await page.keyboard.press('Enter');
+  assert.equal(await domain.getAttribute('aria-pressed'),'true','Depth graph is keyboard accessible');
+  assert((await page.locator('#depth-note').innerText()).includes('GPU networking'),'Connected domains are explained');
+  await page.locator('#L-001 summary').click();
+  assert((await page.locator('#L-001 .record-plot').innerText()).includes('4 μs'),'Plot retains actual E-001 p99');
+  assert((await page.locator('#L-001 .record-plot').innerText()).includes('8 μs'),'Plot retains actual E-003 p99');
+  assert((await page.locator('#L-001 .record-plot').innerText()).includes('256 / 512'),'Loss stays attached to latency');
+  await page.locator('#F-001 summary').click();
+  await page.locator('#F-001 .play-trace').click();
+  assert((await page.locator('#F-001 .failure-instrument').getAttribute('class')).includes('repaired'),'Reduced motion shows documented repair');
+  assert.equal(await page.evaluate(()=>document.getAnimations().filter(a=>a.playState==='running').length),0,'Reduced motion stops the whole interface');
+  await page.locator('#bench').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(300);
+  assert.equal(await page.locator('#active-layer').innerText(),'SILICON','Native scroll updates conceptual descent');
+
   await page.emulateMedia({reducedMotion:'no-preference'});
   await page.locator('#motion-toggle').click();
   assert(await page.locator('html').evaluate(e=>e.classList.contains('motion-off')),'Manual motion pause');
   assert(await page.locator('.hero-art img').evaluate(img=>img.currentSrc.includes('/still/')),'Manual pause selects still artwork');
-  const hero=page.locator('.hero-art img');
+  const hero=page.locator('.hero-scene .scene-mobile .inline-art');
   const still1=await hero.screenshot();
   await page.waitForTimeout(450);
   const still2=await hero.screenshot();
   assert(still1.equals(still2),'Still image stays still');
   assert.equal(await page.evaluate(()=>document.getAnimations().filter(a=>a.playState==='running').length),0,'Inline motion is stopped too');
   await page.locator('#motion-toggle').click();
-  assert(await hero.evaluate(img=>!img.currentSrc.includes('/still/')),'Normal artwork restored');
+  assert(await page.locator('.hero-art img').evaluate(img=>!img.currentSrc.includes('/still/')),'Normal artwork restored');
+  await hero.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(350);
   const animated1=await hero.screenshot();
   await page.waitForTimeout(450);
   const animated2=await hero.screenshot();
   assert(!animated1.equals(animated2),'Normal embedded artwork animates under the content security policy');
 
+
+  await page.locator('#fabric-console [data-mode="incast"]').click();
+  await page.locator('#fabric-console .play-trace').click();
+  await page.waitForTimeout(120);
+  assert.equal(await page.locator('#fabric-console .packet').count(),3,'Incast means three simultaneous converging flows');
+  assert.equal(await page.locator('.trace-running').count(),1,'Only one foreground owner');
+  const bounds=await page.locator('.pet-stage').evaluate(node=>{
+    const a=node.getBoundingClientRect(),b=node.closest('[data-perch]').getBoundingClientRect();
+    return {inside:a.left>=b.left-1&&a.right<=b.right+1&&a.top>=b.top-1&&a.bottom<=b.bottom+1,a:[a.left,a.top,a.width,a.height],b:[b.left,b.top,b.width,b.height]};
+  });
+  assert(bounds.inside,'Walking stays inside its reserved perch: '+JSON.stringify(bounds));
+  await page.locator('#bench').scrollIntoViewIfNeeded();await page.waitForTimeout(300);
+  assert.equal(await page.locator('.trace-running').count(),0,'Offscreen foreground cancels');
+  assert.equal(await page.locator('.packet').count(),0,'Cancelled packets are removed');
+  await page.locator('.core-control').click();
+  assert.equal(await page.locator('.trace-running').count(),1,'Core scan owns the foreground budget');
+  await page.locator('.motion-short').click();
+  assert.equal(await page.locator('.trace-running').count(),0,'Global pause cancels JS motion');
+  assert.equal(await page.locator('#motion-toggle').innerText(),'Resume motion','Pause controls share state');
+  assert.equal(await page.evaluate(()=>document.getAnimations().filter(a=>a.playState==='running').length),0,'Global pause stops all active animations');
+  await page.locator('.motion-short').click();
+  await page.locator('#F-001').scrollIntoViewIfNeeded();
+  if(!await page.locator('#F-001').evaluate(e=>e.open))await page.locator('#F-001 summary').click();
+  await page.locator('#F-001 .play-trace').click();
+  await page.waitForTimeout(800);
+  assert((await page.locator('#F-001 .failure-instrument').getAttribute('class')).includes('broken'),'Failure stops at the image boundary');
+  assert.equal(await page.locator('.pet').getAttribute('data-state'),'singed','Resident reacts to the documented failure');
+  await page.waitForTimeout(2500);
+  assert((await page.locator('#F-001 .failure-instrument').getAttribute('class')).includes('repaired'),'Documented fix restores the path');
+  await page.locator('.resident-touch').focus();await page.keyboard.press('Enter');
+  assert.equal(await page.locator('.pet').getAttribute('data-state'),'observing','Resident supports keyboard interaction');
+  await page.locator('#fabric-console .play-trace').click();
+  await page.evaluate(()=>{
+    Object.defineProperty(document,'hidden',{configurable:true,value:true});
+    document.dispatchEvent(new Event('visibilitychange'));
+  });
+  assert.equal(await page.locator('.trace-running').count(),0,'Hidden-page handler cancels the foreground');
+  assert.equal(await page.locator('.pet').getAttribute('data-state'),'sleeping','Hidden-page handler puts resident to sleep');
+  assert.equal(await page.evaluate(()=>document.getAnimations().filter(a=>a.playState==='running').length),0,'Hidden-page handler suspends animation');
+  await page.evaluate(()=>{delete document.hidden;document.dispatchEvent(new Event('visibilitychange'));});
+  await page.emulateMedia({reducedMotion:'reduce'});
+  for(const width of [360,390,1440]) {
+    await page.setViewportSize({width,height:900});
+    for(const id of ['runtime-playback','fabric-console','memory-geography','depth-title']) {
+      await page.locator('#'+id).scrollIntoViewIfNeeded();
+      await page.waitForTimeout(300);
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth),width,'Instrument layout fits '+width);
+      await page.screenshot({path:path.join(SHOTS,id+'-'+width+'.png')});
+      if(width===390&&['fabric-console','memory-geography'].includes(id)) {
+        const visual=await page.screenshot({type:'jpeg',quality:55});
+        console.log('VISUAL:'+id+':'+visual.toString('base64'));
+      }
+    }
+  }
+  await page.emulateMedia({reducedMotion:'no-preference'});
+
   await page.locator('#signal').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(350);
   await page.clock.install();
   await page.getByRole('button',{name:'Observe',exact:true}).click();
-  await page.clock.fastForward(91000);
+  await page.clock.runFor(91000);
   assert.equal(await page.locator('.pet').getAttribute('data-state'),'sleeping','Companion sleeps after inactivity');
   await page.getByRole('button',{name:'Observe',exact:true}).click();
   assert.equal(await page.locator('.pet').getAttribute('data-state'),'observing','Touch wakes the companion');
